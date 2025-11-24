@@ -1,0 +1,50 @@
+Crear carpeta lang en la raiz del proyecto
+(junto a las carpetas de server, html ,...)
+lang/
+   es.json
+   eu.json
+   en.json
+////////////////////////////////////////////
+Crea un archivo por idioma con claves
+es.json:
+    {
+        "app_name": "APP",
+        "textoPresentacion": "Presentacion",
+        "botonPresentacion": "Boton",
+        "onena": "onena",
+        "jarrillero": "jarrillero",
+        "ospetsua": "ospetsua"
+    }
+eu.json:
+    {
+        "app_name": "APP Euskera",
+        "textoPresentacion": "Aurkezpena",
+        "botonPresentacion": "Botoia"
+    }
+
+Si una clave no está traducida en eu.json, se usará la de es.json como fallback.
+////////////////////////////////////////////
+let strings = {};  // aquí se guardarán los textos cargados
+
+async function loadLanguage(lang) {
+
+    // carga el idioma seleccionado
+    const res = await fetch(`../lang/${lang}.json`);
+    const localStrings = await res.json();
+
+    // carga español como fallback
+    const fallbackRes = await fetch(`../lang/es.json`);
+    const fallbackStrings = await fallbackRes.json();
+
+    // mezcla: si falta algo en el idioma elegido, usa español
+    strings = { ...fallbackStrings, ...localStrings };
+
+    applyStrings();
+}
+
+function applyStrings() {
+    // ejemplo de aplicación en HTML
+    document.getElementById("appName").innerText = strings.app_name;
+    document.getElementById("presentacion").innerText = strings.textoPresentacion;
+    document.getElementById("botonPresentacion").innerText = strings.botonPresentacion;
+}
