@@ -19,6 +19,7 @@
     {
       "id": "1",
       "posicion": "Linea",
+      "tags":["Humano","Linea"],
       "cantidad": 16,
       "coste": 50,
       "MA": 6,
@@ -34,6 +35,7 @@
     {
       "id": "2",
       "posicion": "Halfling",
+      "tags":["Halfling","Linea"],
       "cantidad": 16,
       "coste": 30,
       "MA": 5,
@@ -49,6 +51,7 @@
     {
       "id": "3",
       "posicion": "Catcher",
+      "tags":["Humano","Receptor"],
       "cantidad": 2,
       "coste": 75,
       "MA": 8,
@@ -58,12 +61,13 @@
       "AR": 8,
       "Habilidades": ["Atrapar", "Esquivar"],
       "Pri": ["A", "G"],
-      "Sec": ["P", "F"],
+      "Sec": ["P", "F","T"],
       "Equipos": ["1"]
     },
     {
       "id": "4",
       "posicion": "Thrower",
+      "tags":["Humano","Lanzador"],
       "cantidad": 2,
       "coste": 75,
       "MA": 6,
@@ -79,6 +83,7 @@
     {
       "id": "5",
       "posicion": "Blitzer",
+      "tags":["Humano","Blitzer"],
       "cantidad": 4,
       "coste": 85,
       "MA": 7,
@@ -88,12 +93,13 @@
       "AR": 9,
       "Habilidades": ["Placar", "Placaje Defensivo"],
       "Pri": ["G", "F"],
-      "Sec": ["A", "P"],
+      "Sec": ["A", "T"],
       "Equipos": ["1"]
     },
     {
       "id": "6",
       "posicion": "Ogre",
+      "tags":["Ogro","Big guy"],
       "cantidad": 1,
       "coste": 140,
       "MA": 5,
@@ -109,6 +115,7 @@
 {
       "id": "7",
       "posicion": "Orco Línea",
+      "tags":["Orco","Linea"],
       "cantidad": 16,
       "coste": 50,
       "MA": 5,
@@ -124,6 +131,7 @@
     {
       "id": "8",
       "posicion": "Goblin",
+      "tags":["Goblin","Linea"],
       "cantidad": 16,
       "coste": 40,
       "MA": 6,
@@ -139,6 +147,7 @@
     {
       "id": "9",
       "posicion": "Orco Lanzador",
+      "tags":["Orco","Lanzador"],
       "cantidad": 2,
       "coste": 75,
       "MA": 6,
@@ -154,6 +163,7 @@
     {
       "id": "10",
       "posicion": "Orco Blitzer",
+      "tags":["Orco","Blitzer"],
       "cantidad": 4,
       "coste": 85,
       "MA": 6,
@@ -169,6 +179,7 @@
     {
       "id": "11",
       "posicion": "Big Un Blocker",
+      "tags":["Orco","Defensor"],
       "cantidad": 4,
       "coste": 95,
       "MA": 5,
@@ -184,6 +195,7 @@
     {
       "id": "12",
       "posicion": "Troll",
+      "tags":["Troll","Big guy"],
       "cantidad": 1,
       "coste": 115,
       "MA": 4,
