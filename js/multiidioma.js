@@ -17,8 +17,12 @@ export async function loadLanguage(lang) {
 }
 
 function applyStrings() {
-    // ejemplo de aplicación en HTML
-    document.getElementById("nombre").innerText = strings.nombre;
-    document.getElementById("edad").innerText = strings.edad;
-    document.getElementById("pako").innerText = strings.pako;
+    const ids = Object.keys(strings);
+
+    ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.innerText = strings[id];
+        }
+    });
 }
