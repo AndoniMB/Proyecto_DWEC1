@@ -24,9 +24,24 @@ export async function getJugadores() {
         console.log(error);
     }
 }
-//post de los jugadores
-export async function postJugadore() {
-    
+// funcion que recibe un jugador y lo inserta en la db. Recibe un objeto jugador, que tiene el siguiente aspecto:
+// (id (string),posicion (string),tags (string[]),cantidad (int),coste (int),MA (int),FU (int),AG (int),
+// PA (int),AR (int),Habilidades (string[]),Pri (string[]),Sec (string[]),Equipos (string[]))
+export async function postJugador(jugador) {
+    try {
+        const response = await fetch("http://localhost:3000/jugadores", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(jugador)
+        });
+        if (!response.ok) {
+            throw new Error("Error al guardar el jugador");
+        }
+    } catch (error) {
+        console.log("Error:", error);
+    }
 }
 
 //put de los jugadores
