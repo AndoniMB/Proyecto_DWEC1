@@ -45,8 +45,21 @@ export async function postJugador(jugador) {
 }
 
 //put de los jugadores
-export async function putJugadore() {
-    
+export async function putJugador(id_jugador, jugador) {
+    try {
+        const response = await fetch("http://localhost:3000/jugadores/" + id_jugador, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(jugador)
+        });
+        if (!response.ok) {
+            throw new Error("Error al guardar el jugador");
+        }
+    } catch (error) {
+        console.log("Error:", error);
+    }
 }
 //patch de los jugadores
 export async function patchJugadore() {
