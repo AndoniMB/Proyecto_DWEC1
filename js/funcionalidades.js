@@ -1,6 +1,9 @@
 // import jsPDF
 const { jsPDF } = window.jspdf;
 
+//meter el idioma en la sesion, esto deberia hacerse en otro archivo
+sessionStorage.setItem("idioma","es");
+
 //declarar let infoJugadores = {}; Tener en cuenta que aqui va la informacion de los jugadores y los extras
 //al crear las tarjetas/crear la tabla hacer (ejemplo de uso, los valores del objeto, son lo que hay que reemplazar):   
 // infoJugadores["linea"] = {
