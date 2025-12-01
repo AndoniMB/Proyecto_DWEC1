@@ -66,7 +66,7 @@ export async function putJugador(id_jugador, jugador) {
     }
 }
 
-// funcion que recibe un jugador con x campos y lo actualiza en la db. 
+// funcion que recibe un jugador con los campos que se quieran actualizar en la db. 
 // Recibe un identificador para saber cual es el jugador a actualizar
 // y también recibe un objeto jugador, que tiene el siguiente aspecto (según los campos a actualizar):
 // posicion (string),tags (string[]),cantidad (int),coste (int),MA (int),FU (int),AG (int),
