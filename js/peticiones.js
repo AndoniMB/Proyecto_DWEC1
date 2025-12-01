@@ -44,7 +44,7 @@ export async function postJugador(jugador) {
     }
 }
 
-// funcion que recibe un jugador y lo actualiza en la db. 
+// funcion que recibe un jugador y un id para actualizar todo el objeto en la db. 
 // Recibe un identificador para saber cual es el jugador a actualizar
 // y también recibe un objeto jugador, que tiene el siguiente aspecto:
 // posicion (string),tags (string[]),cantidad (int),coste (int),MA (int),FU (int),AG (int),
@@ -70,7 +70,20 @@ export async function patchJugadore() {
     
 }
 
-//delete de los jugadores
-export async function deleteJugadore() {
-    
+// funcion que recibe un identificador y elimina al jugador de la bd. 
+// Recibe un identificador para saber cual es el jugador a eliminar.
+export async function deleteJugador(id_jugador) {
+    try {
+        const response = await fetch("http://localhost:3000/jugadores/" + id_jugador, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+        if (!response.ok) {
+            throw new Error("Error al guardar el jugador");
+        }
+    } catch (error) {
+        console.log("Error:", error);
+    }
 }
