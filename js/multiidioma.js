@@ -1,6 +1,8 @@
 let strings = {};  // aquí se guardarán los textos cargados
 
 export async function loadLanguage(lang) {
+    //meter el idioma en la sesion, esto deberia hacerse en otro archivo
+    sessionStorage.setItem("idioma",lang);
 
     // carga el idioma seleccionado
     const res = await fetch(`../lang/${lang}.json`);

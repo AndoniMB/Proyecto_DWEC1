@@ -1,8 +1,7 @@
 // import jsPDF
 const { jsPDF } = window.jspdf;
 
-//meter el idioma en la sesion, esto deberia hacerse en otro archivo
-sessionStorage.setItem("idioma","es");
+
 
 //declarar let infoJugadores = {}; Tener en cuenta que aqui va la informacion de los jugadores y los extras
 //al crear las tarjetas/crear la tabla hacer (ejemplo de uso, los valores del objeto, son lo que hay que reemplazar):   
@@ -34,7 +33,17 @@ sessionStorage.setItem("idioma","es");
 export function generarPDF(nombreEquipo, mapaElemtosEquipo, infoJugadores) {
   const doc = new jsPDF({ orientation: "landscape" });
   doc.setFontSize(18);
-  doc.text(`Team: ${nombreEquipo}`, 14, 15);
+  switch (sessionStorage.getItem("idioma")) {
+    case "en":
+      doc.text(`Team: ${nombreEquipo}`, 14, 15);
+      break;
+    case "eu":
+      doc.text(`Taldea: ${nombreEquipo}`, 14, 15);
+      break;
+    case "es":
+      doc.text(`Equipo: ${nombreEquipo}`, 14, 15);
+      break;
+  }
   // tabla de jugadores
   let dorsal = 1;
   const jugadores = [];
@@ -65,21 +74,58 @@ export function generarPDF(nombreEquipo, mapaElemtosEquipo, infoJugadores) {
   doc.autoTable({
     startY: 25,
     //cabeceras
-    head: [[
-      'Back Number',
-      'Position',
-      'Tags',
-      'Name',
-      'Price',
-      'MV',
-      'ST',
-      'AG',
-      'PA',
-      'AR',
-      'Skills',
-      'Pri',
-      'Sec'
-    ]],
+    head: (() => {
+      switch (sessionStorage.getItem("idioma")) {
+        case "en":
+          return [[
+            'Back Number',
+            'Position',
+            'Tags',
+            'Name',
+            'Price',
+            'MV',
+            'ST',
+            'AG',
+            'PA',
+            'AR',
+            'Skills',
+            'Pri',
+            'Sec'
+          ]];
+        case "eu":
+          return [[
+            'Atzera Zenbakia',
+            'Posizioa',
+            'Etiketak',
+            'Izena',
+            'Prezioa',
+            'MU',
+            'IN',
+            'AG',
+            'PA',
+            'AR',
+            'Gaitasunak',
+            'Leh',
+            'Big'
+          ]];
+        case "es":
+          return [[
+            'Dorsal',
+            'Posición',
+            'Etiquetas',
+            'Nombre',
+            'Precio',
+            'MV',
+            'FU',
+            'AG',
+            'PA',
+            'AR',
+            'Habilidades',
+            'Pri',
+            'Sec'
+          ]];
+      }
+    })(),
     //contenido
     body: jugadores,
     theme: 'grid',
@@ -104,13 +150,34 @@ export function generarPDF(nombreEquipo, mapaElemtosEquipo, infoJugadores) {
   }
   doc.autoTable({
     startY: doc.lastAutoTable.finalY + 10,
-    head: [[
-      'Extra',        
-      'Quantity',     
-      'Limit',        
-      'Price',        
-      'Description'   
-    ]],
+    head: (() => {
+      switch (sessionStorage.getItem("idioma")) {
+        case "en":
+          return [[
+            'Extra',
+            'Quantity',
+            'Limit',
+            'Price',
+            'Description'
+          ]];
+        case "eu":
+          return [[
+            'Extra',
+            'Kantitatea', 
+            'Muga', 
+            'Prezioa', 
+            'Deskribapena'
+          ]];
+        case "es":
+          return [[
+            'Extra',
+            'Cantidad',
+            'Limite',
+            'Precio',
+            'Descripción'
+          ]];
+      }
+    })(),
     body: extras,
     theme: 'grid',
     headStyles: { fillColor: [30, 30, 30], textColor: 255 },
