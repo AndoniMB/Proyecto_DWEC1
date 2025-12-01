@@ -83,21 +83,22 @@ export function generarPDF(nombreEquipo,mapaElemtosEquipo,infoJugadores){
       headStyles: { fillColor: [50, 50, 50], textColor: 255 },
       styles: { fontSize: 9, cellPadding: 2 },
       tableWidth: '100%',
-      columnStyles: {
-        0: { cellWidth: 15, halign: 'center' }, // dorsal
-        1: { cellWidth: 28 }, // posición
-        2: { cellWidth: 20}, // tags
-        3: { cellWidth: 35}, // nombre
-        4: { cellWidth: 20 }, // precio
-        5: { cellWidth: 12 }, // mv
-        6: { cellWidth: 12 }, // fu
-        7: { cellWidth: 12 }, // ag
-        8: { cellWidth: 12 }, // pa
-        9:{ cellWidth: 12 }, // ar
-        10:{ cellWidth: 45},  // habilidades
-        11:{ cellWidth: 12 }, // Pri
-        12:{ cellWidth: 12 } // Sec
-      }
+      styles: { fontSize: 9, cellPadding: 2 }
+      // columnStyles: {
+      //   0: { cellWidth: 15, halign: 'center' }, // dorsal
+      //   1: { cellWidth: 30 }, // posición
+      //   2: { cellWidth: 20}, // tags
+      //   3: { cellWidth: 45}, // nombre
+      //   4: { cellWidth: 20 }, // precio
+      //   5: { cellWidth: 12 }, // mv
+      //   6: { cellWidth: 12 }, // fu
+      //   7: { cellWidth: 12 }, // ag
+      //   8: { cellWidth: 12 }, // pa
+      //   9:{ cellWidth: 12 }, // ar
+      //   10:{ cellWidth: 55},  // habilidades
+      //   11:{ cellWidth: 12 }, // Pri
+      //   12:{ cellWidth: 12 } // Sec
+      // }
     });
     // Tabla de extras
     const extras = [];
