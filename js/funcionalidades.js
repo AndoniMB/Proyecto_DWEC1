@@ -31,7 +31,7 @@ const { jsPDF } = window.jspdf;
 export function generarPDF(nombreEquipo, mapaElemtosEquipo, infoJugadores) {
   const doc = new jsPDF({ orientation: "landscape" });
   doc.setFontSize(18);
-  doc.text(`Equipo: ${nombreEquipo}`, 14, 15);
+  doc.text(`Team: ${nombreEquipo}`, 14, 15);
   // tabla de jugadores
   let dorsal = 1;
   const jugadores = [];
