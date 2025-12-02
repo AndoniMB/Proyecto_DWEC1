@@ -120,7 +120,6 @@ export async function getJugadoresEquipo(idEquipo) {
                 arrDevolver.push(jugador);
             }
         });
-        console.log(arrDevolver);
         return arrDevolver;
     }catch(error){
         console.log(error);
