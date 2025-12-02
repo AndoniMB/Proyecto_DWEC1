@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Aketza Gonzalez, Lierni Sarraoa, Andoni Montero">
+    <meta name="description" content="Pagina para crear jugadores y añadirlos a la API">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" href="../img/logo.png" type="image/x-icon">
+    <title>BB | DWEC</title>
+</head>
+<body>
+    
+    <header>
+        <h1 id="tituloJugadores">★JUGADORES★</h1>
+        <nav class="menu">
+            <div class="menu--etiqueta">
+                <a href="../index.html"><img src="../img/logo.png" alt="Despliega Menu" class="menu--logo"></a>
+            </div>
+            <div class="menu--items">
+                <div class="menu--item"><a href="../index.html">Pagina principal</a></div>
+                <div class="menu--item"><a href="./crearEquipo.html">Crear equipo</a></div>
+                <div class="menu--item"><a href="./verEquipos.html">Ver equipos</a></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="contenedor">
+            <form method="post">
+                <h2 id="creaJugador">Crea tu jugador</h2>
+                <label for="nombre" id="nombre">Nombre</label>    
+                <input type="text" name="nombre">
+                <label for="posicion" id="posicion">Posición</label>
+                <input type="text" name="posicion">
+                <label for="tags" id="tags">Etiquetas</label>
+                <input type="text" name="tags">
+                <label for="cantidad" id="cantidad">Cantidad máxima</label>
+                <input type="number" name="cantidad">
+                <label for="precio" id="precio">Precio</label>
+                <input type="number" name="precio">
+                <label for="mv" id="mv">MV</label>
+                <input type="number" id="mv">
+                <label for="fu" id="fu">FU</label>
+                <input type="number" name="fu">
+                <label for="ag" id="ag">AG</label>
+                <input type="number" name="ag">
+                <label for="pa" id="pa">PA</label>
+                <input type="number" name="pa">
+                <label for="ar" id="ar">AR</label>
+                <input type="number" name="ar">
+                <label for="pri" id="pri">Habilidades principales</label>
+                <input type="text" name="pri">
+                <label for="sec" id="sec">Habilidades secundarias</label>
+                <input type="text" name="sec">
+                <label for="equipos">Equipos</label>
+                <input type="text" name="equipos">
+                <input type="submit" id="submit">
+            </form>
+        </section>    
+    </main>
+    <footer>
+        <p>Poyecto DWEC - 2025</p>
+    </footer>
+</body>
+</html>
