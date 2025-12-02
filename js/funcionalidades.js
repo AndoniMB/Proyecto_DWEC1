@@ -1,6 +1,8 @@
 // import jsPDF
 const { jsPDF } = window.jspdf;
 
+
+
 //declarar let infoJugadores = {}; Tener en cuenta que aqui va la informacion de los jugadores y los extras
 //al crear las tarjetas/crear la tabla hacer (ejemplo de uso, los valores del objeto, son lo que hay que reemplazar):   
 // infoJugadores["linea"] = {
@@ -31,7 +33,17 @@ const { jsPDF } = window.jspdf;
 export function generarPDF(nombreEquipo, mapaElemtosEquipo, infoJugadores) {
   const doc = new jsPDF({ orientation: "landscape" });
   doc.setFontSize(18);
-  doc.text(`Team: ${nombreEquipo}`, 14, 15);
+  switch (sessionStorage.getItem("idioma")) {
+    case "en":
+      doc.text(`Team: ${nombreEquipo}`, 14, 15);
+      break;
+    case "eu":
+      doc.text(`Taldea: ${nombreEquipo}`, 14, 15);
+      break;
+    case "es":
+      doc.text(`Equipo: ${nombreEquipo}`, 14, 15);
+      break;
+  }
   // tabla de jugadores
   let dorsal = 1;
   const jugadores = [];
@@ -62,21 +74,58 @@ export function generarPDF(nombreEquipo, mapaElemtosEquipo, infoJugadores) {
   doc.autoTable({
     startY: 25,
     //cabeceras
-    head: [[
-      'Back Number',
-      'Position',
-      'Tags',
-      'Name',
-      'Price',
-      'MV',
-      'ST',
-      'AG',
-      'PA',
-      'AR',
-      'Skills',
-      'Pri',
-      'Sec'
-    ]],
+    head: (() => {
+      switch (sessionStorage.getItem("idioma")) {
+        case "en":
+          return [[
+            'Back Number',
+            'Position',
+            'Tags',
+            'Name',
+            'Price',
+            'MV',
+            'ST',
+            'AG',
+            'PA',
+            'AR',
+            'Skills',
+            'Pri',
+            'Sec'
+          ]];
+        case "eu":
+          return [[
+            'Atzera Zenbakia',
+            'Posizioa',
+            'Etiketak',
+            'Izena',
+            'Prezioa',
+            'MU',
+            'IN',
+            'AG',
+            'PA',
+            'AR',
+            'Gaitasunak',
+            'Leh',
+            'Big'
+          ]];
+        case "es":
+          return [[
+            'Dorsal',
+            'Posición',
+            'Etiquetas',
+            'Nombre',
+            'Precio',
+            'MV',
+            'FU',
+            'AG',
+            'PA',
+            'AR',
+            'Habilidades',
+            'Pri',
+            'Sec'
+          ]];
+      }
+    })(),
     //contenido
     body: jugadores,
     theme: 'grid',
@@ -101,13 +150,34 @@ export function generarPDF(nombreEquipo, mapaElemtosEquipo, infoJugadores) {
   }
   doc.autoTable({
     startY: doc.lastAutoTable.finalY + 10,
-    head: [[
-      'Extra',        
-      'Quantity',     
-      'Limit',        
-      'Price',        
-      'Description'   
-    ]],
+    head: (() => {
+      switch (sessionStorage.getItem("idioma")) {
+        case "en":
+          return [[
+            'Extra',
+            'Quantity',
+            'Limit',
+            'Price',
+            'Description'
+          ]];
+        case "eu":
+          return [[
+            'Extra',
+            'Kantitatea',
+            'Muga',
+            'Prezioa',
+            'Deskribapena'
+          ]];
+        case "es":
+          return [[
+            'Extra',
+            'Cantidad',
+            'Limite',
+            'Precio',
+            'Descripción'
+          ]];
+      }
+    })(),
     body: extras,
     theme: 'grid',
     headStyles: { fillColor: [30, 30, 30], textColor: 255 },
@@ -120,7 +190,7 @@ export function generarPDF(nombreEquipo, mapaElemtosEquipo, infoJugadores) {
 
 //funcion que devuelve un nombre (nombre y mote) aleatorio sacado de 2 arrays constantes (NOMBRES y MOTES)
 function generarNombre() {
-  const NOMBRES = ["Thorgar",
+  const NOMBRES = [
     "Thorgar",
     "Morgul",
     "Balin",
@@ -172,7 +242,7 @@ function generarNombre() {
     "Norrik",
     "Othran"
   ];
-  const MOTES = [
+  const MOTES_EN = [
     "\"The Prole\"",
     "\"The Destroyer\"",
     "\"Quick Hands\"",
@@ -225,5 +295,98 @@ function generarNombre() {
     "\"Lethal Shadow\"",
     "\"Hawk Eye\""
   ];
-  return NOMBRES[Math.floor(Math.random() * NOMBRES.length)] + " " + MOTES[Math.floor(Math.random() * MOTES.length)]
+  const MOTES_ES = [
+    "\"La Prole\"",
+    "\"El Destructor\"",
+    "\"Manos Rápidas\"",
+    "\"El Imparable\"",
+    "\"Garras de Hierro\"",
+    "\"Rugido Mortal\"",
+    "\"Puño de Piedra\"",
+    "\"Sombra Nocturna\"",
+    "\"Colmillo Sangriento\"",
+    "\"El Invencible\"",
+    "\"Ojo de Águila\"",
+    "\"Martillo de Guerra\"",
+    "\"Lanza Veloz\"",
+    "\"Cazador Nocturno\"",
+    "\"Tormenta de Acero\"",
+    "\"Ojo de Halcón\"",
+    "\"Bestia Furiosa\"",
+    "\"Garra Letal\"",
+    "\"El Devastador\"",
+    "\"Sangre Fría\"",
+    "\"Puño de Hierro\"",
+    "\"El Implacable\"",
+    "\"Destruidor de Sueños\"",
+    "\"Halcon Oscuro\"",
+    "\"Rayo Mortal\"",
+    "\"Escudo de Piedra\"",
+    "\"Corte Rápido\"",
+    "\"Sombra Mortal\"",
+    "\"Furia del Dragón\"",
+    "\"Destructor Silencioso\"",
+    "\"Mano Fantasma\"",
+    "\"Coloso Rugiente\"",
+    "\"Puño del Trueno\"",
+    "\"Lobo Solitario\"",
+    "\"El Voraz\"",
+    "\"Martillo Mortal\"",
+    "\"Diente de Sable\"",
+    "\"Furia Relámpago\"",
+    "\"Ojo de Tigre\"",
+    "\"El Violento\"",
+    "\"Garras Sombrías\"",
+    "\"El Tronador\"",
+    "\"Rugido de Acero\"",
+    "\"Sable Veloz\"",
+    "\"Espada de la Noche\"",
+    "\"Destructor de Hombres\"",
+    "\"Puño de Acero\"",
+    "\"Furia Imparable\"",
+    "\"El Aniquilador\"",
+    "\"Sombra Letal\"",
+    "\"Ojo de Halcón\""
+  ];
+  const MOTES_EU = [
+    "\"Proletarioa\"",
+    "\"Suntsitzailea\"",
+    "\"Esku Azkarrak\"",
+    "\"Gelditu Ezina\"",
+    "\"Burdin Harkaitza\"",
+    "\"Hiltzaileen Oihuak\"",
+    "\"Harrizko Ukabila\"",
+    "\"Gaueko Itzala\"",
+    "\"Odol Kolpatu\"",
+    "\"Gailentza Gabea\"",
+    "\"Etxe Adarra\"",
+    "\"Gerra Martillo\"",
+    "\"Asto Lasterra\"",
+    "\"Gaueko Ehiztaria\"",
+    "\"Altzairuzko Ekaitza\"",
+    "\"Harrigorri Begia\"",
+    "\"Zaldi Sutsu\"",
+    "\"Azken Gorria\"",
+    "\"Suntsitzailea\"",
+    "\"Garaile Iguzkia\"",
+    "\"Burden Bakarra\"",
+    "\"Deabruen Deia\"",
+    "\"Gaueko Oihua\"",
+    "\"Buruzko Oihua\"",
+    "\"Pena Bastardoa\"",
+    "\"Herri Bat Makina\"",
+    "\"Suntsitzailea Maite\"",
+    "\"Berdintasunari\"",
+    "\"Beratasuna Edatetikak\"",
+    "\"Burdinezko Zuloak\"",
+    "\"Miasms Diefernatch\""
+  ];
+  switch (sessionStorage.getItem("idioma")) {
+        case "en":
+          return NOMBRES[Math.floor(Math.random() * NOMBRES.length)] + " " + MOTES_EN[Math.floor(Math.random() * MOTES_EN.length)]
+        case "eu":
+          return NOMBRES[Math.floor(Math.random() * NOMBRES.length)] + " " + MOTES_EU[Math.floor(Math.random() * MOTES_EU.length)]
+        case "es":
+          return NOMBRES[Math.floor(Math.random() * NOMBRES.length)] + " " + MOTES_ES[Math.floor(Math.random() * MOTES_ES.length)]
+      }
 }
