@@ -125,6 +125,7 @@ export async function getJugadoresEquipo(idEquipo) {
     }catch(error){
         console.log(error);
     }
+}
 
 //funcion que realiza una peticion get de un jugador y devuelve un objeto jugador con los campos
 //(id (string),posicion (string),tags (string[]),cantidad (int),coste (int),MA (int),FU (int),AG (int),
