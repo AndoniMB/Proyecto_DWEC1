@@ -24,6 +24,7 @@ export async function getJugadores() {
         console.log(error);
     }
 }
+
 // funcion que recibe un jugador y lo inserta en la db. Recibe un objeto jugador, que tiene el siguiente aspecto:
 // (id (string),posicion (string),tags (string[]),cantidad (int),coste (int),MA (int),FU (int),AG (int),
 // PA (int),AR (int),Habilidades (string[]),Pri (string[]),Sec (string[]),Equipos (string[]))
@@ -106,7 +107,7 @@ export async function deleteJugador(id_jugador) {
     }
 }
 
-//funcion que realiza una peticion get de los jugadores y devuelve un array de objetos con campos
+//funcion que realiza una peticion get de los jugadores de un equipo y devuelve un array de objetos con campos
 //(id (string),posicion (string),tags (string[]),cantidad (int),coste (int),MA (int),FU (int),AG (int),
 //PA (int),AR (int),Habilidades (string[]),Pri (string[]),Sec (string[]),Equipos (string[]))
 export async function getJugadoresEquipo(idEquipo) {
@@ -121,6 +122,19 @@ export async function getJugadoresEquipo(idEquipo) {
             }
         });
         return arrDevolver;
+    }catch(error){
+        console.log(error);
+    }
+
+//funcion que realiza una peticion get de un jugador y devuelve un objeto jugador con los campos
+//(id (string),posicion (string),tags (string[]),cantidad (int),coste (int),MA (int),FU (int),AG (int),
+//PA (int),AR (int),Habilidades (string[]),Pri (string[]),Sec (string[]),Equipos (string[]))
+export async function getJugador(id) {
+    try{
+        const response = await fetch("http://localhost:3000/jugadores/"+id);
+        if(!response.ok) throw new Error ("GET erróneo");
+        const jugador = await response.json();
+        return jugador
     }catch(error){
         console.log(error);
     }
