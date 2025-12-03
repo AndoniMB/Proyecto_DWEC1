@@ -122,7 +122,7 @@ function crearTarjetaGenerica(section, nombre, tags, limite, precio, mv, fu, ag,
 
   tdCantidad.textContent = (mapaElemtosEquipo.get(nombre.toLowerCase()) || 0) + `-${limite}`;
   tdAlineacion.textContent = nombre;
-  tdTags.textContent=tags.join("\n");
+  tdTags.textContent=tags;
   tdPrecio.textContent = precio+"k";
   tdMovimiento.textContent = mv || "-";
   tdFuerza.textContent = fu || "-";
@@ -131,6 +131,7 @@ function crearTarjetaGenerica(section, nombre, tags, limite, precio, mv, fu, ag,
   tdArmadura.textContent = ar+"+" || "-";
   tdHabilidades.textContent = habilidades || "-";
 
+  //no se puede llamar a loadLanguage porque funciona por id y el id tiene que ser unico
   switch (sessionStorage.getItem("idioma")) {
     case "en":
       btnAniadir.textContent = "Add";

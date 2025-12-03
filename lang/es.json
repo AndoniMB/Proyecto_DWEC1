@@ -1,5 +1,8 @@
 {
-    "nombre": "nombre",
-    "edad": "edad",
-    "pako": "pako"
+    "btnValidar":"Validar",
+    "creaTuEquipo":"Crea tu equipo",
+    "tituloCreador":"★CREADOR DE EQUIPOS★",
+    "paginaPrincipal":"Crear jugadores",
+    "verEquipos":"Ver equipos",
+    "crearJugadores":"Crear jugadores"
 }
