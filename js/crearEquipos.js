@@ -62,11 +62,23 @@ function eliminarJugador(nombre, cantidadMax, precio, spanCantidad, esExtra = fa
 
 // función para actualizar indicadores
 function actualizarIndicadores() {
-  indicadorDinero.textContent = `Tesorería gastada: ${dineroGastado}/1000k`;
+    switch (sessionStorage.getItem("idioma")) {
+    case "en":
+      indicadorDinero.textContent = `Spent treasury: ${dineroGastado}/1000k`;
+      indicadorJugadores.textContent = `Players: ${jugadoresTotales}/16`;
+      break;
+    case "eu":
+      indicadorDinero.textContent = `Gastatutako dirua: ${dineroGastado}/1000k`;
+      indicadorJugadores.textContent = `Jokalariak: ${jugadoresTotales}/16`;
+      break;
+    case "es":
+      indicadorDinero.textContent = `Tesorería gastada: ${dineroGastado}/1000k`;
+      indicadorJugadores.textContent = `Jugadores: ${jugadoresTotales}/16`;
+      break;
+  }
   indicadorDinero.style.color = dineroGastado > 1000 ? "red" : "black";
   txtErrorTesoreria.style.visibility = dineroGastado > 1000 ? "visible" : "hidden";
 
-  indicadorJugadores.textContent = `Jugadores: ${jugadoresTotales}/16`;
   indicadorJugadores.style.color = jugadoresTotales < 11 ? "red" : "black";
   txtErrorJugadores.style.visibility = jugadoresTotales < 11 ? "visible" : "hidden";
 }
@@ -119,8 +131,20 @@ function crearTarjetaGenerica(section, nombre, tags, limite, precio, mv, fu, ag,
   tdArmadura.textContent = ar+"+" || "-";
   tdHabilidades.textContent = habilidades || "-";
 
-  btnAniadir.textContent = "Añadir";
-  btnEliminar.textContent = "Eliminar";
+  switch (sessionStorage.getItem("idioma")) {
+    case "en":
+      btnAniadir.textContent = "Add";
+      btnEliminar.textContent = "Remove";
+      break;
+    case "eu":
+      btnAniadir.textContent = "Gehitu";
+      btnEliminar.textContent = "Kendu";
+      break;
+    case "es":
+      btnAniadir.textContent = "Añadir";
+      btnEliminar.textContent = "Eliminar";
+      break;
+  }
 
   btnAniadir.addEventListener("click", (event) => {
     event.preventDefault();
@@ -191,12 +215,34 @@ async function mostrarExtras(section, idEquipo) {
   let equipo= await getEquipo(idEquipo);
   let rerollPrecio=equipo.reroll;
   //TODO traducir textos
-  crearTarjetaGenerica(section, "Reroll",[],8,rerollPrecio,"-","-","-","-","-",["Repetir tiradas"],[],[],true);
-  crearTarjetaGenerica(section, "Ayudantes de entrenador",[], 6, 10, "-", "-", "-", "-", "-", ["Ayudan en alguna tirada de patada incial"],[],[], true);
-  crearTarjetaGenerica(section, "Animadoras",[], 6, 10, "-", "-", "-", "-", "-", ["Ayudan en alguna tirada de patada incial"],[],[], true);
-  crearTarjetaGenerica(section, "Fan Factor",[], 6, 10, "-", "-", "-", "-", "-", ["Ayudan en alguna tirada de patada inicial y en la tirada de ingresos en liga"],[],[], true);
-  if(equipo.apotecario){
-    crearTarjetaGenerica(section, "Apotecario",[], 1, 50, "-", "-", "-", "-", "-", ["Permite repetir una tirada de lesión"],[],[], true);
+  switch (sessionStorage.getItem("idioma")) {
+    case "en":
+      crearTarjetaGenerica(section, "Reroll",[],8,rerollPrecio,"-","-","-","-","-",["Repeat a roll"],[],[],true);
+      crearTarjetaGenerica(section, "Coaching assistants",[], 6, 10, "-", "-", "-", "-", "-", ["Help on a kickoff roll"],[],[], true);
+      crearTarjetaGenerica(section, "Animadoras",[], 6, 10, "-", "-", "-", "-", "-", ["Help on a kickoff roll"],[],[], true);
+      crearTarjetaGenerica(section, "Fan Factor",[], 6, 10, "-", "-", "-", "-", "-", ["Help on a kickoff roll and on the income roll"],[],[], true);
+      if(equipo.apotecario){
+        crearTarjetaGenerica(section, "Apothecary",[], 1, 50, "-", "-", "-", "-", "-", ["Repeat a injury roll"],[],[], true);
+      }
+      break;
+    case "eu":
+      crearTarjetaGenerica(section, "Reroll",[],8,rerollPrecio,"-","-","-","-","-",["Errepikatu dado jaurtiketa"],[],[],true);
+      crearTarjetaGenerica(section, "Entrenatzailearen laguntzaileak",[], 6, 10, "-", "-", "-", "-", "-", ["Sake gertaera batean laguntzen dute"],[],[], true);
+      crearTarjetaGenerica(section, "Animadoras",[], 6, 10, "-", "-", "-", "-", "-", ["Sake gertaera batean laguntzen dute"],[],[], true);
+      crearTarjetaGenerica(section, "Fan Factor",[], 6, 10, "-", "-", "-", "-", "-", ["Sake gertaera batean laguntzen dute baita diru jaurtiketan ere"],[],[], true);
+      if(equipo.apotecario){
+        crearTarjetaGenerica(section, "Medikua",[], 1, 50, "-", "-", "-", "-", "-", ["Lesio jaurtiketa bat errepikatu"],[],[], true);
+      }
+      break;
+    case "es":
+      crearTarjetaGenerica(section, "Reroll",[],8,rerollPrecio,"-","-","-","-","-",["Repetir tiradas"],[],[],true);
+      crearTarjetaGenerica(section, "Ayudantes de entrenador",[], 6, 10, "-", "-", "-", "-", "-", ["Ayudan en una tirada de patada incial"],[],[], true);
+      crearTarjetaGenerica(section, "Animadoras",[], 6, 10, "-", "-", "-", "-", "-", ["Ayudan en alguna una de patada incial"],[],[], true);
+      crearTarjetaGenerica(section, "Fan Factor",[], 6, 10, "-", "-", "-", "-", "-", ["Ayudan en alguna una de patada inicial y en la tirada de ingresos en liga"],[],[], true);
+      if(equipo.apotecario){
+        crearTarjetaGenerica(section, "Apotecario",[], 1, 50, "-", "-", "-", "-", "-", ["Permite repetir una tirada de lesión"],[],[], true);
+      }
+      break;
   }
 }
 
@@ -217,9 +263,20 @@ async function mostrarEquipoSeleccionado() {
 
   indicadorDinero = document.createElement("h3");
   indicadorJugadores = document.createElement("h3");
-
-  indicadorDinero.textContent = `Tesorería gastada: ${dineroGastado}/1000k`;
-  indicadorJugadores.textContent = `Jugadores: ${jugadoresTotales}/16`;
+  switch (sessionStorage.getItem("idioma")) {
+    case "en":
+      indicadorDinero.textContent = `Spent treasury: ${dineroGastado}/1000k`;
+      indicadorJugadores.textContent = `Players: ${jugadoresTotales}/16`;
+      break;
+    case "eu":
+      indicadorDinero.textContent = `Gastatutako dirua: ${dineroGastado}/1000k`;
+      indicadorJugadores.textContent = `Jokalariak: ${jugadoresTotales}/16`;
+      break;
+    case "es":
+      indicadorDinero.textContent = `Tesorería gastada: ${dineroGastado}/1000k`;
+      indicadorJugadores.textContent = `Jugadores: ${jugadoresTotales}/16`;
+      break;
+  }
   indicadorJugadores.style.color = "red";
 
   txtErrorTesoreria = document.createElement("span");
