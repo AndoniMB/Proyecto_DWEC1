@@ -1,9 +1,15 @@
 // import jsPDF
 const { jsPDF } = window.jspdf;
+//importar generarPDF
+import { generarPDF } from "./funcionalidades.js";
+//importar las funcionalidades de getEquipos y getJugadoresEquipo
+import { getEquipos, getJugadoresEquipo, getEquipo } from "./peticiones.js";
 
 // variable para almacenar los jugadores y extras seleccionados
 let mapaElemtosEquipo = new Map();
-
+//guardar el select en variable de ambito global
+let select;
+//crear mapa de info de jugadores
 let infoJugadores = {};  // key = nombre.toLowerCase() 
 
 // variables globales para los indicadores y la imagen
@@ -19,7 +25,7 @@ let txtErrorJugadores;
 function aniadirJugador(nombre, cantidadMax, precio, spanCantidad, esExtra = false) {
   let cantidadActual = mapaElemtosEquipo.get(nombre) || 0;
   let limite = parseInt(cantidadMax.split("-")[1]);
-  let costo = parseInt(precio.replace("k", ""));
+  let costo = precio;
 
   if (!esExtra && jugadoresTotales >= 16) {
     alert("No puedes tener más de 16 jugadores en tu equipo.");
@@ -42,7 +48,7 @@ function aniadirJugador(nombre, cantidadMax, precio, spanCantidad, esExtra = fal
 function eliminarJugador(nombre, cantidadMax, precio, spanCantidad, esExtra = false) {
   let cantidadActual = mapaElemtosEquipo.get(nombre) || 0;
   let limite = parseInt(cantidadMax.split("-")[1]);
-  let costo = parseInt(precio.replace("k", ""));
+  let costo=precio;
 
   if (cantidadActual > 0) {
     mapaElemtosEquipo.set(nombre, cantidadActual - 1);
@@ -86,11 +92,12 @@ function crearTablaEstadisticas(contenedorEstadisticas, tdMovimiento, tdFuerza, 
 }
 
 // función genérica para crear tarjetas
-function crearTarjetaGenerica(section, nombre, limite, precio, mv, fu, ag, pa, ar, habilidades, esExtra = false) {
+function crearTarjetaGenerica(section, nombre, tags, limite, precio, mv, fu, ag, pa, ar, habilidades,pri,sec, esExtra = false) {
   let div = document.createElement("div");
   let tdCantidad = document.createElement("span");
   let tdAlineacion = document.createElement("span");
   let tdPrecio = document.createElement("span");
+  let tdTags = document.createElement("span");
   let contenedorEstadisticas = document.createElement("table");
   let tdMovimiento = document.createElement("td");
   let tdFuerza = document.createElement("td");
@@ -103,12 +110,13 @@ function crearTarjetaGenerica(section, nombre, limite, precio, mv, fu, ag, pa, a
 
   tdCantidad.textContent = (mapaElemtosEquipo.get(nombre.toLowerCase()) || 0) + `-${limite}`;
   tdAlineacion.textContent = nombre;
-  tdPrecio.textContent = precio;
+  tdTags.textContent=tags.join("\n");
+  tdPrecio.textContent = precio+"k";
   tdMovimiento.textContent = mv || "-";
   tdFuerza.textContent = fu || "-";
-  tdAgilidad.textContent = ag || "-";
-  tdPase.textContent = pa || "-";
-  tdArmadura.textContent = ar || "-";
+  tdAgilidad.textContent = ag+"+" || "-";
+  tdPase.textContent = pa+"+" || "-";
+  tdArmadura.textContent = ar+"+" || "-";
   tdHabilidades.textContent = habilidades || "-";
 
   btnAniadir.textContent = "Añadir";
@@ -116,6 +124,7 @@ function crearTarjetaGenerica(section, nombre, limite, precio, mv, fu, ag, pa, a
 
   btnAniadir.addEventListener("click", (event) => {
     event.preventDefault();
+    //--------------------------------------
     aniadirJugador(nombre.toLowerCase(), tdCantidad.textContent, precio, tdCantidad, esExtra);
   });
 
@@ -125,6 +134,7 @@ function crearTarjetaGenerica(section, nombre, limite, precio, mv, fu, ag, pa, a
   });
 
   div.appendChild(tdCantidad);
+  div.appendChild(tdTags);
   div.appendChild(tdAlineacion);
   div.appendChild(tdPrecio);
 
@@ -141,6 +151,8 @@ function crearTarjetaGenerica(section, nombre, limite, precio, mv, fu, ag, pa, a
 
   // Aplicar clases y áreas
   div.className = "tarjeta";
+  tdTags.style.gridArea="tags";
+  tdTags.style.fontWeight="bold";
   tdAlineacion.style.gridArea = "tipo";
   tdCantidad.style.gridArea = "cantidad";
   contenedorEstadisticas.style.gridArea = "estadisticas";
@@ -151,7 +163,8 @@ function crearTarjetaGenerica(section, nombre, limite, precio, mv, fu, ag, pa, a
   contenedorEstadisticas.className = "equipo";
 
   infoJugadores[nombre.toLowerCase()] = {
-    nombre,
+    posicion:nombre,
+    tags,
     limite,
     precio,
     mv,
@@ -159,59 +172,36 @@ function crearTarjetaGenerica(section, nombre, limite, precio, mv, fu, ag, pa, a
     ag,
     pa,
     ar,
-    habilidades
+    habilidades,
+    pri,
+    sec
 };
-//TODO cambiar lo de arriba para que tenga esta estructura
-// infoJugadores["otro"] = {
-//     posicion:"linea",
-//     tags:["Human","Linea"],
-//     limite:16,
-//     precio:50,
-//     mv:"-",
-//     fu:3,
-//     ag:3,
-//     pa:3,
-//     ar:9,
-//     habilidades:[],
-//     pri:["G"],
-//     sec:["A","P"]
-// };
 }
 
-// equipo humano
-function mostrarHumanos(section) {
-  crearTarjetaGenerica(section, "Línea", 16, "50k", "6", "3", "3+", "4+", "9+", "-");
-  crearTarjetaGenerica(section, "Thrower", 2, "80k", "6", "3", "3+", "2+", "9+", "Manos seguras, Pasar");
-  crearTarjetaGenerica(section, "Catcher", 4, "65k", "8", "2", "3+", "5+", "8+", "Atrapar, Esquivar");
-  crearTarjetaGenerica(section, "Blitzer", 4, "85k", "7", "3", "3+", "4+", "9+", "Placar");
-  crearTarjetaGenerica(section, "Halfling", 3, "30k", "5", "2", "3+", "4+", "7+", "Escurridizo, Esquivar, Humanoide bala");
-  crearTarjetaGenerica(section, "Ogre", 1, "140k", "5", "5", "4+", "5+", "10+", "Estúpido, Solitario (4+), Golpe mortífero(+1), Cabeza dura, Lanzar compañero");
-  mostrarExtras(section, "humanos");
-}
-
-// equipo orco
-function mostrarOrcos(section) {
-  crearTarjetaGenerica(section, "Orco Línea", 16, "50k", "5", "3", "3+", "4+", "10+", "-");
-  crearTarjetaGenerica(section, "Thrower", 2, "65k", "5", "3", "3+", "3+", "9+", "Animosidad, Manos seguras, Pasar");
-  crearTarjetaGenerica(section, "Blitzer", 4, "80k", "6", "3", "3+", "4+", "10+", "Animosidad, Placar");
-  crearTarjetaGenerica(section, "Big Un Blocker", 4, "90k", "5", "4", "4+", "-", "10+", "Animosidad");
-  crearTarjetaGenerica(section, "Goblin", 4, "40k", "6", "2", "3+", "4+", "8+", "Escurridizo, Esquivar");
-  crearTarjetaGenerica(section, "Untrained Troll", 1, "115k", "4", "5", "5+", "5+", "10+", "Solitario, Estúpido, Regeneración");
-  mostrarExtras(section, "orcos");
+async function mostrarEquipo(section,equipo) {
+  let jugadores=await getJugadoresEquipo(equipo)
+  jugadores.forEach(jugador => {
+    crearTarjetaGenerica(section,jugador.posicion,jugador.tags,jugador.cantidad,jugador.coste,jugador.MV,jugador.FU,jugador.AG,jugador.PA,jugador.AR,jugador.Habilidades,jugador.Pri,jugador.Sec,false)
+  });
+  await mostrarExtras(section, equipo);
 }
 
 // extras finales
-function mostrarExtras(section, tipoEquipo) {
-  let rerollPrecio = tipoEquipo === "orcos" ? "60k" : "50k";
-  crearTarjetaGenerica(section, "Reroll", 8, rerollPrecio, "-", "-", "-", "-", "-", "Repetir tiradas", true);
-  crearTarjetaGenerica(section, "Ayudantes de entrenador", 6, "10k", "-", "-", "-", "-", "-", "Ayudan en alguna tirada de patada incial", true);
-  crearTarjetaGenerica(section, "Animadoras", 6, "10k", "-", "-", "-", "-", "-", "Ayudan en alguna tirada de patada incial", true);
-  crearTarjetaGenerica(section, "Fan Factor", 6, "10k", "-", "-", "-", "-", "-", "Ayudan en alguna tirada de patada inicial y en la tirada de ingresos en liga", true);
-  crearTarjetaGenerica(section, "Apotecario", 1, "50k", "-", "-", "-", "-", "-", "Permite repetir una tirada de lesión", true);
+async function mostrarExtras(section, idEquipo) {
+  let equipo= await getEquipo(idEquipo);
+  let rerollPrecio=equipo.reroll;
+  //TODO traducir textos
+  crearTarjetaGenerica(section, "Reroll",[],8,rerollPrecio,"-","-","-","-","-",["Repetir tiradas"],[],[],true);
+  crearTarjetaGenerica(section, "Ayudantes de entrenador",[], 6, 10, "-", "-", "-", "-", "-", ["Ayudan en alguna tirada de patada incial"],[],[], true);
+  crearTarjetaGenerica(section, "Animadoras",[], 6, 10, "-", "-", "-", "-", "-", ["Ayudan en alguna tirada de patada incial"],[],[], true);
+  crearTarjetaGenerica(section, "Fan Factor",[], 6, 10, "-", "-", "-", "-", "-", ["Ayudan en alguna tirada de patada inicial y en la tirada de ingresos en liga"],[],[], true);
+  if(equipo.apotecario){
+    crearTarjetaGenerica(section, "Apotecario",[], 1, 50, "-", "-", "-", "-", "-", ["Permite repetir una tirada de lesión"],[],[], true);
+  }
 }
 
 // función principal
-function mostrarEquipoSeleccionado() {
+async function mostrarEquipoSeleccionado() {
   let section = document.getElementById("informacionEquipo");
   section.innerHTML = "";
 
@@ -252,174 +242,38 @@ function mostrarEquipoSeleccionado() {
   divIndicadores.className="superior";
   section.appendChild(divIndicadores);
 
-  //TODO cambiar para todos los equipos
-  switch (select.value) {
-    case "humanos":
-      mostrarHumanos(section);
-      break;
-    case "orcos":
-      mostrarOrcos(section);
-      break;
-  }
+  await mostrarEquipo(section,select.value);
 }
 
-// select
-//TODO cambiar esto para que sea en funcion de la peticion getEquipos
-let select = document.getElementById("equipos");
+//funcion para cargar el select
+async function cargarSelect(){
+  select = document.getElementById("equipos");
+  let equipos= await getEquipos();
+  equipos.forEach(equipo => {
+    let option=document.createElement("option")
+    option.text=equipo.nombre;
+    option.value=equipo.id;
+    select.appendChild(option);
+  });
+  select.addEventListener("change", mostrarEquipoSeleccionado);
+}
 
-let humanos = document.createElement("option");
-humanos.text = "Humanos";
-humanos.value = "humanos";
-select.appendChild(humanos);
-
-let orcos = document.createElement("option");
-orcos.text = "Orcos";
-orcos.value = "orcos";
-select.appendChild(orcos);
-
-select.addEventListener("change", mostrarEquipoSeleccionado);
-mostrarEquipoSeleccionado();
+//funcion para cargar la pagina
+async function cargarPagina() {
+  await cargarSelect();
+  await mostrarEquipoSeleccionado(); 
+}
 
 // función para generar el PDF
-//TODO cambiar por la funcion de funcionalidades.js
-function generarPDF(event) {
+function accionGenerarPDF(event) {
   event.preventDefault();
-
   if (dineroGastado <= 1000 && jugadoresTotales >= 11) {
-
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF({ orientation: "landscape" });
-
-    // ===========================
-    //   TÍTULO DEL EQUIPO
-    // ===========================
-
-    const nombreEquipo = select.options[select.selectedIndex].text;
-
-    doc.setFontSize(18);
-    doc.text(`Equipo: ${nombreEquipo}`, 14, 15);
-
-    // ===========================
-    //   TABLA DE JUGADORES (fila por jugador)
-    // ===========================
-
-    let dorsal = 1;
-    const jugadores = [];
-
-    for (let [nombre, cantidad] of mapaElemtosEquipo.entries()) {
-
-      const j = infoJugadores[nombre];
-
-      // Jugadores = elementos con estadísticas (es decir, mv != "-")
-      if (cantidad > 0 && j && j.mv !== "-") {
-
-        for (let i = 0; i < cantidad; i++) {
-          jugadores.push([
-            dorsal,        // Dorsal (nuevo)
-            j.nombre,      // Posición
-            "",            // Tags (nuevo)
-            "",            // Nombre (nuevo)
-            j.precio,      // Precio
-            j.mv,
-            j.fu,
-            j.ag,
-            j.pa,
-            j.ar,
-            j.habilidades,
-            "Pri",
-            "Sec"
-          ]);
-          dorsal++;
-        }
-      }
-    }
-
-    doc.autoTable({
-      startY: 25,
-      head: [[
-        'Dorsal',
-        'Posición',
-        'Tags',
-        'Nombre',
-        'Precio',
-        'MV',
-        'FU',
-        'AG',
-        'PA',
-        'AR',
-        'Habilidades',
-        'Pri',
-        'Sec'
-      ]],
-      body: jugadores,
-      theme: 'grid',
-      headStyles: { fillColor: [50, 50, 50], textColor: 255 },
-      styles: { fontSize: 9, cellPadding: 2 },
-      columnStyles: {
-        0: { cellWidth: 15, halign: 'center' }, // dorsal
-        1: { cellWidth: 28 }, // posición
-        2: { cellWidth: 20 }, // tags
-        3: { cellWidth: 35 }, // nombre
-        4: { cellWidth: 20 }, // precio
-        5: { cellWidth: 12 }, // mv
-        6: { cellWidth: 12 }, // fu
-        7: { cellWidth: 12 }, // ag
-        8: { cellWidth: 12 }, // pa
-        9:{ cellWidth: 12 }, // ar
-        10:{ cellWidth: 45 },  // habilidades
-        11:{ cellWidth: 12 }, // ar
-        12:{ cellWidth: 12 } // ar
-      }
-    });
-
-    // ===========================
-    //   TABLA DE EXTRAS (igual que antes)
-    // ===========================
-
-    const extras = [];
-
-    for (let [nombre, cantidad] of mapaElemtosEquipo.entries()) {
-
-      const j = infoJugadores[nombre];
-
-      if (cantidad > 0 && j && j.mv === "-") {
-
-        extras.push([
-          j.nombre,
-          cantidad,
-          j.limite,
-          j.precio,
-          j.habilidades
-        ]);
-      }
-    }
-
-    doc.autoTable({
-      startY: doc.lastAutoTable.finalY + 10,
-      head: [[
-        'Extra',
-        'Cantidad',
-        'Límite',
-        'Precio',
-        'Descripción'
-      ]],
-      body: extras,
-      theme: 'grid',
-      headStyles: { fillColor: [30, 30, 30], textColor: 255 },
-      styles: { fontSize: 9, cellPadding: 2 }
-    });
-
-    // ===========================
-    //   GUARDAR PDF
-    // ===========================
-
-    doc.save(`${nombreEquipo}.pdf`);
-
+    generarPDF("NOMBRE",mapaElemtosEquipo,infoJugadores)
   } else {
     alert("Debes tener un mínimo de 11 jugadores y un máximo de 1000k gastados.");
   }
 }
 
-
 // evento para botón
-document.getElementById("btnValidar").addEventListener("click", generarPDF);
+document.getElementById("btnValidar").addEventListener("click", accionGenerarPDF);
+cargarPagina()
