@@ -1,5 +1,3 @@
-// import jsPDF
-const { jsPDF } = window.jspdf;
 //importar generarPDF
 import { generarPDF } from "./funcionalidades.js";
 //importar las funcionalidades de getEquipos y getJugadoresEquipo
@@ -28,7 +26,17 @@ function aniadirJugador(nombre, cantidadMax, precio, spanCantidad, esExtra = fal
   let costo = precio;
 
   if (!esExtra && jugadoresTotales >= 16) {
-    alert("No puedes tener más de 16 jugadores en tu equipo.");
+    switch (sessionStorage.getItem("idioma")) {
+      case "en":
+        alert("You can't have more than 16 players in your team.");
+        break;
+      case "eu":
+        alert("Ezin dituzu 16 jokalari baino gehiago izan zure taldean.");
+        break;
+      case "es":
+        alert("No puedes tener más de 16 jugadores en tu equipo.");
+        break;
+    }
     return;
   }
 
@@ -40,7 +48,17 @@ function aniadirJugador(nombre, cantidadMax, precio, spanCantidad, esExtra = fal
     if (!esExtra) jugadoresTotales++;
     actualizarIndicadores();
   } else {
-    alert(`No puedes añadir más de ${limite} ${nombre}`);
+    switch (sessionStorage.getItem("idioma")) {
+      case "en":
+        alert(`You can't add more than ${limite} "${nombre}"`);
+        break;
+      case "eu":
+        alert(`Ezin dituzu ${limite} "${nombre}" baino gehiago izan`);
+        break;
+      case "es":
+        alert(`No puedes añadir más de ${limite} "${nombre}"`);
+        break;
+    }
   }
 }
 
@@ -48,7 +66,7 @@ function aniadirJugador(nombre, cantidadMax, precio, spanCantidad, esExtra = fal
 function eliminarJugador(nombre, cantidadMax, precio, spanCantidad, esExtra = false) {
   let cantidadActual = mapaElemtosEquipo.get(nombre) || 0;
   let limite = parseInt(cantidadMax.split("-")[1]);
-  let costo=precio;
+  let costo = precio;
 
   if (cantidadActual > 0) {
     mapaElemtosEquipo.set(nombre, cantidadActual - 1);
@@ -62,7 +80,7 @@ function eliminarJugador(nombre, cantidadMax, precio, spanCantidad, esExtra = fa
 
 // función para actualizar indicadores
 function actualizarIndicadores() {
-    switch (sessionStorage.getItem("idioma")) {
+  switch (sessionStorage.getItem("idioma")) {
     case "en":
       indicadorDinero.textContent = `Spent treasury: ${dineroGastado}/1000k`;
       indicadorJugadores.textContent = `Players: ${jugadoresTotales}/16`;
@@ -104,7 +122,7 @@ function crearTablaEstadisticas(contenedorEstadisticas, tdMovimiento, tdFuerza, 
 }
 
 // función genérica para crear tarjetas
-function crearTarjetaGenerica(section, nombre, tags, limite, precio, mv, fu, ag, pa, ar, habilidades,pri,sec, esExtra = false) {
+function crearTarjetaGenerica(section, nombre, tags, limite, precio, mv, fu, ag, pa, ar, habilidades, pri, sec, esExtra = false) {
   let div = document.createElement("div");
   let tdCantidad = document.createElement("span");
   let tdAlineacion = document.createElement("span");
@@ -122,13 +140,13 @@ function crearTarjetaGenerica(section, nombre, tags, limite, precio, mv, fu, ag,
 
   tdCantidad.textContent = (mapaElemtosEquipo.get(nombre.toLowerCase()) || 0) + `-${limite}`;
   tdAlineacion.textContent = nombre;
-  tdTags.textContent=tags;
-  tdPrecio.textContent = precio+"k";
+  tdTags.textContent = tags;
+  tdPrecio.textContent = precio + "k";
   tdMovimiento.textContent = mv || "-";
   tdFuerza.textContent = fu || "-";
-  tdAgilidad.textContent = ag+"+" || "-";
-  tdPase.textContent = pa+"+" || "-";
-  tdArmadura.textContent = ar+"+" || "-";
+  tdAgilidad.textContent = ag + "+" || "-";
+  tdPase.textContent = pa + "+" || "-";
+  tdArmadura.textContent = ar + "+" || "-";
   tdHabilidades.textContent = habilidades || "-";
 
   //no se puede llamar a loadLanguage porque funciona por id y el id tiene que ser unico
@@ -149,7 +167,6 @@ function crearTarjetaGenerica(section, nombre, tags, limite, precio, mv, fu, ag,
 
   btnAniadir.addEventListener("click", (event) => {
     event.preventDefault();
-    //--------------------------------------
     aniadirJugador(nombre.toLowerCase(), tdCantidad.textContent, precio, tdCantidad, esExtra);
   });
 
@@ -176,8 +193,8 @@ function crearTarjetaGenerica(section, nombre, tags, limite, precio, mv, fu, ag,
 
   // Aplicar clases y áreas
   div.className = "tarjeta";
-  tdTags.style.gridArea="tags";
-  tdTags.style.fontWeight="bold";
+  tdTags.style.gridArea = "tags";
+  tdTags.style.fontWeight = "bold";
   tdAlineacion.style.gridArea = "tipo";
   tdCantidad.style.gridArea = "cantidad";
   contenedorEstadisticas.style.gridArea = "estadisticas";
@@ -188,7 +205,7 @@ function crearTarjetaGenerica(section, nombre, tags, limite, precio, mv, fu, ag,
   contenedorEstadisticas.className = "equipo";
 
   infoJugadores[nombre.toLowerCase()] = {
-    posicion:nombre,
+    posicion: nombre,
     tags,
     limite,
     precio,
@@ -200,48 +217,47 @@ function crearTarjetaGenerica(section, nombre, tags, limite, precio, mv, fu, ag,
     habilidades,
     pri,
     sec
-};
+  };
 }
 
-async function mostrarEquipo(section,equipo) {
-  let jugadores=await getJugadoresEquipo(equipo)
+async function mostrarEquipo(section, equipo) {
+  let jugadores = await getJugadoresEquipo(equipo)
   jugadores.forEach(jugador => {
-    crearTarjetaGenerica(section,jugador.posicion,jugador.tags,jugador.cantidad,jugador.coste,jugador.MV,jugador.FU,jugador.AG,jugador.PA,jugador.AR,jugador.Habilidades,jugador.Pri,jugador.Sec,false)
+    crearTarjetaGenerica(section, jugador.posicion, jugador.tags, jugador.cantidad, jugador.coste, jugador.MV, jugador.FU, jugador.AG, jugador.PA, jugador.AR, jugador.Habilidades, jugador.Pri, jugador.Sec, false)
   });
   await mostrarExtras(section, equipo);
 }
 
 // extras finales
 async function mostrarExtras(section, idEquipo) {
-  let equipo= await getEquipo(idEquipo);
-  let rerollPrecio=equipo.reroll;
-  //TODO traducir textos
+  let equipo = await getEquipo(idEquipo);
+  let rerollPrecio = equipo.reroll;
   switch (sessionStorage.getItem("idioma")) {
     case "en":
-      crearTarjetaGenerica(section, "Reroll",[],8,rerollPrecio,"-","-","-","-","-",["Repeat a roll"],[],[],true);
-      crearTarjetaGenerica(section, "Coaching assistants",[], 6, 10, "-", "-", "-", "-", "-", ["Help on a kickoff roll"],[],[], true);
-      crearTarjetaGenerica(section, "Animadoras",[], 6, 10, "-", "-", "-", "-", "-", ["Help on a kickoff roll"],[],[], true);
-      crearTarjetaGenerica(section, "Fan Factor",[], 6, 10, "-", "-", "-", "-", "-", ["Help on a kickoff roll and on the income roll"],[],[], true);
-      if(equipo.apotecario){
-        crearTarjetaGenerica(section, "Apothecary",[], 1, 50, "-", "-", "-", "-", "-", ["Repeat a injury roll"],[],[], true);
+      crearTarjetaGenerica(section, "Reroll", [], 8, rerollPrecio, "-", "-", "-", "-", "-", ["Repeat a roll"], [], [], true);
+      crearTarjetaGenerica(section, "Coaching assistants", [], 6, 10, "-", "-", "-", "-", "-", ["Help on a kickoff roll"], [], [], true);
+      crearTarjetaGenerica(section, "Animadoras", [], 6, 10, "-", "-", "-", "-", "-", ["Help on a kickoff roll"], [], [], true);
+      crearTarjetaGenerica(section, "Fan Factor", [], 6, 10, "-", "-", "-", "-", "-", ["Help on a kickoff roll and on the income roll"], [], [], true);
+      if (equipo.apotecario) {
+        crearTarjetaGenerica(section, "Apothecary", [], 1, 50, "-", "-", "-", "-", "-", ["Repeat a injury roll"], [], [], true);
       }
       break;
     case "eu":
-      crearTarjetaGenerica(section, "Reroll",[],8,rerollPrecio,"-","-","-","-","-",["Errepikatu dado jaurtiketa"],[],[],true);
-      crearTarjetaGenerica(section, "Entrenatzailearen laguntzaileak",[], 6, 10, "-", "-", "-", "-", "-", ["Sake gertaera batean laguntzen dute"],[],[], true);
-      crearTarjetaGenerica(section, "Animadoras",[], 6, 10, "-", "-", "-", "-", "-", ["Sake gertaera batean laguntzen dute"],[],[], true);
-      crearTarjetaGenerica(section, "Fan Factor",[], 6, 10, "-", "-", "-", "-", "-", ["Sake gertaera batean laguntzen dute baita diru jaurtiketan ere"],[],[], true);
-      if(equipo.apotecario){
-        crearTarjetaGenerica(section, "Medikua",[], 1, 50, "-", "-", "-", "-", "-", ["Lesio jaurtiketa bat errepikatu"],[],[], true);
+      crearTarjetaGenerica(section, "Reroll", [], 8, rerollPrecio, "-", "-", "-", "-", "-", ["Errepikatu dado jaurtiketa"], [], [], true);
+      crearTarjetaGenerica(section, "Entrenatzailearen laguntzaileak", [], 6, 10, "-", "-", "-", "-", "-", ["Sake gertaera batean laguntzen dute"], [], [], true);
+      crearTarjetaGenerica(section, "Animadoras", [], 6, 10, "-", "-", "-", "-", "-", ["Sake gertaera batean laguntzen dute"], [], [], true);
+      crearTarjetaGenerica(section, "Fan Factor", [], 6, 10, "-", "-", "-", "-", "-", ["Sake gertaera batean laguntzen dute baita diru jaurtiketan ere"], [], [], true);
+      if (equipo.apotecario) {
+        crearTarjetaGenerica(section, "Medikua", [], 1, 50, "-", "-", "-", "-", "-", ["Lesio jaurtiketa bat errepikatu"], [], [], true);
       }
       break;
     case "es":
-      crearTarjetaGenerica(section, "Reroll",[],8,rerollPrecio,"-","-","-","-","-",["Repetir tiradas"],[],[],true);
-      crearTarjetaGenerica(section, "Ayudantes de entrenador",[], 6, 10, "-", "-", "-", "-", "-", ["Ayudan en una tirada de patada incial"],[],[], true);
-      crearTarjetaGenerica(section, "Animadoras",[], 6, 10, "-", "-", "-", "-", "-", ["Ayudan en alguna una de patada incial"],[],[], true);
-      crearTarjetaGenerica(section, "Fan Factor",[], 6, 10, "-", "-", "-", "-", "-", ["Ayudan en alguna una de patada inicial y en la tirada de ingresos en liga"],[],[], true);
-      if(equipo.apotecario){
-        crearTarjetaGenerica(section, "Apotecario",[], 1, 50, "-", "-", "-", "-", "-", ["Permite repetir una tirada de lesión"],[],[], true);
+      crearTarjetaGenerica(section, "Reroll", [], 8, rerollPrecio, "-", "-", "-", "-", "-", ["Repetir tiradas"], [], [], true);
+      crearTarjetaGenerica(section, "Ayudantes de entrenador", [], 6, 10, "-", "-", "-", "-", "-", ["Ayudan en una tirada de patada incial"], [], [], true);
+      crearTarjetaGenerica(section, "Animadoras", [], 6, 10, "-", "-", "-", "-", "-", ["Ayudan en alguna una de patada incial"], [], [], true);
+      crearTarjetaGenerica(section, "Fan Factor", [], 6, 10, "-", "-", "-", "-", "-", ["Ayudan en alguna una de patada inicial y en la tirada de ingresos en liga"], [], [], true);
+      if (equipo.apotecario) {
+        crearTarjetaGenerica(section, "Apotecario", [], 1, 50, "-", "-", "-", "-", "-", ["Permite repetir una tirada de lesión"], [], [], true);
       }
       break;
   }
@@ -297,20 +313,20 @@ async function mostrarEquipoSeleccionado() {
 
   divIndicadores.appendChild(divIndicadorTesoreria);
   divIndicadores.appendChild(divIndicadorJugadores);
-  divIndicadores.className="superior";
+  divIndicadores.className = "superior";
   section.appendChild(divIndicadores);
 
-  await mostrarEquipo(section,select.value);
+  await mostrarEquipo(section, select.value);
 }
 
 //funcion para cargar el select
-async function cargarSelect(){
+async function cargarSelect() {
   select = document.getElementById("equipos");
-  let equipos= await getEquipos();
+  let equipos = await getEquipos();
   equipos.forEach(equipo => {
-    let option=document.createElement("option")
-    option.text=equipo.nombre;
-    option.value=equipo.id;
+    let option = document.createElement("option")
+    option.text = equipo.nombre;
+    option.value = equipo.id;
     select.appendChild(option);
   });
   select.addEventListener("change", mostrarEquipoSeleccionado);
@@ -319,17 +335,43 @@ async function cargarSelect(){
 //funcion para cargar la pagina
 async function cargarPagina() {
   await cargarSelect();
-  await mostrarEquipoSeleccionado(); 
+  await mostrarEquipoSeleccionado();
 }
 
 // función para generar el PDF
 function accionGenerarPDF(event) {
   event.preventDefault();
-  if (dineroGastado <= 1000 && jugadoresTotales >= 11) {
-    generarPDF("NOMBRE",mapaElemtosEquipo,infoJugadores)
+  let nombreEquipo = document.getElementById("txtNombreEquipo").value.trim();
+  if (nombreEquipo != "") {
+    if (dineroGastado <= 1000 && jugadoresTotales >= 11) {
+      generarPDF(nombreEquipo, mapaElemtosEquipo, infoJugadores)
+    } else {
+      switch (sessionStorage.getItem("idioma")) {
+        case "en":
+          alert("You must have at least 11 players an a max of 1000k of spent trasury.");
+          break;
+        case "eu":
+          alert("11 jokalari gutxienez izan behar dituzu eta gehienez 1000k gastatuta.");
+          break;
+        case "es":
+          alert("Debes tener un mínimo de 11 jugadores y un máximo de 1000k gastados.");
+          break;
+      }
+    }
   } else {
-    alert("Debes tener un mínimo de 11 jugadores y un máximo de 1000k gastados.");
+    switch (sessionStorage.getItem("idioma")) {
+      case "en":
+        alert("You must to write a name for your team.");
+        break;
+      case "eu":
+        alert("Zure taldearen izena idatzi behar duzu.");
+        break;
+      case "es":
+        alert("Debes insertar un nombre para tu equipo.");
+        break;
+    }
   }
+
 }
 
 // evento para botón
