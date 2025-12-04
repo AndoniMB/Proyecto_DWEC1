@@ -104,11 +104,11 @@ function actualizarIndicadores() {
 // función auxiliar para crear tabla de estadísticas
 function crearTablaEstadisticas(contenedorEstadisticas, tdMovimiento, tdFuerza, tdAgilidad, tdPase, tdArmadura) {
   const ESTADISTICAS = [
-    ["MV", tdMovimiento],
-    ["FU", tdFuerza],
+    ["MA", tdMovimiento],
+    ["ST", tdFuerza],
     ["AG", tdAgilidad],
     ["PA", tdPase],
-    ["AR", tdArmadura]
+    ["AV", tdArmadura]
   ];
 
   ESTADISTICAS.forEach(([texto, td]) => {
@@ -140,14 +140,23 @@ function crearTarjetaGenerica(section, nombre, tags, limite, precio, mv, fu, ag,
 
   tdCantidad.textContent = (mapaElemtosEquipo.get(nombre.toLowerCase()) || 0) + `-${limite}`;
   tdAlineacion.textContent = nombre;
-  tdTags.textContent = tags;
+  if (tags.length > 0) {
+    tdTags.innerHTML = "·" + tags.join("<br>·");
+    if (habilidades[0] == "-") {
+      tdHabilidades.innerHTML = "-";
+    } else {
+      tdHabilidades.innerHTML = "·" + habilidades.join("<br>·");
+    }
+  } else {
+    tdTags.innerHTML = "";
+    tdHabilidades.textContent=habilidades
+  }
   tdPrecio.textContent = precio + "k";
   tdMovimiento.textContent = mv || "-";
   tdFuerza.textContent = fu || "-";
   tdAgilidad.textContent = ag + "+" || "-";
   tdPase.textContent = pa + "+" || "-";
   tdArmadura.textContent = ar + "+" || "-";
-  tdHabilidades.textContent = habilidades || "-";
 
   //no se puede llamar a loadLanguage porque funciona por id y el id tiene que ser unico
   switch (sessionStorage.getItem("idioma")) {

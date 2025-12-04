@@ -1,6 +1,10 @@
 let strings = {};  // aquí se guardarán los textos cargados
 
 export async function loadLanguage(lang) {
+    //validar que el idioma existe
+    if(lang==null){
+        lang="es";
+    }
     //meter el idioma en la sesion
     sessionStorage.setItem("idioma",lang);
 
@@ -14,7 +18,6 @@ export async function loadLanguage(lang) {
 
     // mezcla: si falta algo en el idioma elegido, usa español
     strings = { ...fallbackStrings, ...localStrings };
-
     applyStrings();
 }
 

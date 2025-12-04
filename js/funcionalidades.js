@@ -131,8 +131,7 @@ export function generarPDF(nombreEquipo, mapaElemtosEquipo, infoJugadores) {
     theme: 'grid',
     headStyles: { fillColor: [50, 50, 50], textColor: 255 },
     styles: { fontSize: 9, cellPadding: 2 },
-    tableWidth: '100%',
-    styles: { fontSize: 9, cellPadding: 2 }
+    tableWidth: '100%'
   });
   // Tabla de extras
   const extras = [];
