@@ -140,7 +140,7 @@ export function generarPDF(nombreEquipo, mapaElemtosEquipo, infoJugadores) {
     const j = infoJugadores[nombre];
     if (cantidad > 0 && j && j.mv == "-") {
       extras.push([
-        j.nombre,
+        j.posicion,
         cantidad,
         j.limite,
         j.precio,

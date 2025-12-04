@@ -245,7 +245,7 @@ th {
 .tarjeta{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-areas:"tipo cantidad cantidad"
+  grid-template-areas:"tipo tags cantidad"
                       "estadisticas habilidades habilidades"
                       "estadisticas habilidades habilidades"
                       "estadisticas precio precio"
@@ -253,6 +253,7 @@ th {
   background-color: var(--tarjeta);
   margin: 1em;
   padding: 0.5em;
+  gap: 0.5em;
 }
 /******************************/
 /*    07.Footer    */

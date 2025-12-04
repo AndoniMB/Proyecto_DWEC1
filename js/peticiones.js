@@ -140,3 +140,16 @@ export async function getJugador(id) {
         console.log(error);
     }
 }
+
+//funcion que realiza una peticion get de un equipo y lo devuelve como objeto
+//(id (string),nombre (string), normasEspeciales (string[]), reroll (int), apotecario (boolean))
+export async function getEquipo(id) {
+    try{
+        const response = await fetch("http://localhost:3000/equipos/"+id);
+        if(!response.ok) throw new Error ("GET erróneo");
+        const equipos = await response.json();
+        return equipos
+    }catch(error){
+        console.log(error);
+    }
+}
