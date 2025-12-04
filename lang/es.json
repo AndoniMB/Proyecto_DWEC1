@@ -2,6 +2,7 @@
     "btnValidar":"Validar",
     "creaTuEquipo":"Crea tu equipo",
     "tituloCreador":"★CREADOR DE EQUIPOS★",
+    "tituloEquipos":"★EQUIPOS DISPONIBLES★",
     "paginaPrincipal":"Crear jugadores",
     "verEquipos":"Ver equipos",
     "crearEquipo":"Crear equipo",
@@ -19,5 +20,7 @@
     "ar":"AR",
     "habilidades":"Habilidades",
     "pri":"Pri",
-    "sec":"Sec"
+    "sec":"Sec",
+    "tablaEquipos":"Revisa la tabla de los equipos",
+    "btnCrearEquipo":"Crea tu propio equipo"
 }
