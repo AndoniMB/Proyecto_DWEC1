@@ -18,7 +18,6 @@ LISTA DE CONTENIDOS
 */
 
 
-
 /******************************/
 /*    01.Colores y Estilos    */
 /******************************/
@@ -35,14 +34,15 @@ LISTA DE CONTENIDOS
   --fondo-footer: brown;
   --box-shadow: rgba(0, 0, 0, 0.2);
 }
+
 /******************************/
-/*    02.General    */
+/*    02.General              */
 /******************************/
-/* necesario para evitar solapamientos con el header y el footer */
 html, body {
   height: 100%;
   margin: 0;
 }
+
 body{
     display: grid;
     grid-template-columns: 1fr;
@@ -51,64 +51,97 @@ body{
                         "footer";
     background-color: var(--fondo-principal);
     height: 100vh;
-    overflow: hidden; /* Evita scroll en body */
+    overflow: hidden;
 }
+
+/************* HEADER COMPLETO REVISADO *************/
 header{
     background-color: var(--fondo-header);
-    padding: 0.5em;
+    padding: 0.5em 1rem;
     grid-area: header;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     height: 6em;
-    /*z-index: 10;*/
-    padding: 0 1rem;
+
+    /* NUEVO: para colocar menú izq - título centro - select dcha */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-h1{
+
+header h1{
     text-align: center;
     color: var(--hueso);
+    margin: 0;
+    flex: 1; /* centro real */
 }
+
+/**************** SELECT A LA DERECHA ***************/
+.selector-derecha {
+    position: absolute;
+    right: 1rem;
+    top: 1.7rem;
+}
+
+.selector-derecha select{
+    padding: 0.3rem 0.6rem;
+    border-radius: 0.6rem;
+    border: 1px solid #ccc;
+    font-size: 1em;
+    background: white;
+}
+
+/****************************************************/
+
 main{
-    margin-top: 1em;
-    grid-area: main;
     margin-top: 6em;
     margin-bottom: 3em;
     overflow: auto;
     padding: 1rem;
     height: calc(100vh - 6em - 5em);
 }
+
 section{
   overflow: auto;
 }
+
 a {
   color: var(--fondo-footer);
   text-decoration: none;
 }
+
 b {
   font-size: 1.2em;
 }
+
 select{
     text-align: center;
     width: 100%;
     margin: auto;
 }
+
 textarea{
   height: 10em;
 }
+
 button,input[type="submit"]{
   border-radius: 7em;
 }
+
 .ocupaTodo{
   width: 100%;
 }
+
 .contenedor{
     padding: 1em;
     background-color: var(--fondo);
     border-radius: 2em;
 }
+
 /******************************/
-/*    03.Tablas    */
+/*    03.Tablas               */
 /******************************/
 table {
     width: 90%;
@@ -117,27 +150,31 @@ table {
     background: #ffffff;
     border-collapse: collapse;
 }
+
 td,th {
     border: thin solid #cccccc;
     padding: 1em;
 }
+
 th {
     text-transform: uppercase;
     text-align: center;
 }
+
 .equipo>tr:hover{
-    background-color: var(--apoyo);
+    background-color: var(--granate);
     color: var(--hueso);
 }
+
 /******************************/
-/*    04.Barra de Navegacion    */
+/*    04.Barra de Navegacion  */
 /******************************/
 .menu {
   font-weight: 500;
   color: var(--granate);
   display: flex;
   align-items: center;
-  position: fixed;
+  position: absolute; /* AJUSTE */
   top: 0.8rem;
   left: 1.25rem;
   gap: 0.9rem;
@@ -145,7 +182,6 @@ th {
   background-color: var(--hueso);
   border-radius: 1.25rem;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
-  /*z-index: 1;*/
 }
 
 .menu:hover {
@@ -153,16 +189,13 @@ th {
   transform: translateY(-0.1875rem);
 }
 
-/* Estilo para la etiqueta principal con imagen */
 .menu--etiqueta {
   cursor: pointer;
-  pointer-events: all;
   display: flex;
   align-items: center;
   justify-content: center;
   min-width: 2.5rem;
   max-width: 2.5rem;
-  position: relative;
 }
 
 .menu--logo {
@@ -170,7 +203,6 @@ th {
   height: auto;
 }
 
-/* Ocultar elementos del menú por defecto */
 .menu--items {
   padding-left: 0.1em;
   text-align: center;
@@ -184,7 +216,6 @@ th {
   transform: translateY(0.625rem);
 }
 
-/* Mostrar elementos del menú al hacer hover en la etiqueta */
 .menu:hover .menu--items {
   padding-right: 0.9375rem;
   display: flex;
@@ -192,7 +223,6 @@ th {
   transform: translateY(0);
 }
 
-/* Estilo de cada elemento de menú */
 .menu--item {
   opacity: 0;
   transition: opacity 0.5s ease, transform 0.5s ease;
@@ -215,7 +245,7 @@ th {
 }
 
 /******************************/
-/*  05.Superior a tarjetas  */
+/*  05.Superior a tarjetas    */
 /******************************/
 .superior{
   grid-area: gastado;
@@ -223,10 +253,11 @@ th {
   justify-content: space-around;
   align-items: center;
 }
+
 .animacionError {
   opacity: 0;
   font-size: 2em;
-  animation: animacionError 5s ease-in-out infinite; /* 10s = 5s visible + 5s invisible */
+  animation: animacionError 5s ease-in-out infinite;
 }
 
 @keyframes animacionError {
@@ -234,14 +265,16 @@ th {
   50%  { opacity: 1; }
   100% { opacity: 0; }
 }
+
 /******************************/
-/*    06.Tarjetas    */
+/*    06.Tarjetas             */
 /******************************/
 .contenedorTarjetas{
   display: grid;
   grid-template-columns: 1fr;
   grid-template-areas:"gastado";
 }
+
 .tarjeta{
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -255,8 +288,9 @@ th {
   padding: 0.5em;
   gap: 0.5em;
 }
+
 /******************************/
-/*    07.Footer    */
+/*    07.Footer               */
 /******************************/
 footer{
     grid-area: footer;
@@ -274,15 +308,14 @@ footer{
     height: 3em;
     z-index: 10;
 }
+
 footer>p{
     color: var(--hueso);
-    grid-area: auto;
 }
 
 /******************************/
 /*           08.Cookie        */
 /******************************/
-
 .aviso-cookies {
   position: fixed;
   bottom: 50%;
@@ -323,9 +356,10 @@ footer>p{
 }
 
 /******************************/
-/*    09.Media Tablets    */
+/*    09.Media Tablets        */
 /******************************/
 @media (min-width: 750px) {
+
  body {
     font-size: 1.1em;
   }
@@ -338,7 +372,6 @@ footer>p{
     top: 1rem;
   }
 
-  /* Tarjetas más amplias y con sombra */
   .contenedorTarjetas{
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -351,7 +384,6 @@ footer>p{
     padding: 1em;
   }
 
-  /* Formularios más cómodos */
   table {
     width: 80%;
   }
@@ -360,10 +392,12 @@ footer>p{
     font-size: 1em;
   }
 }
+
 /******************************/
-/*    10.Media Escritorio    */
+/*    10.Media Escritorio     */
 /******************************/
 @media (min-width: 1000px) {
+
 body {
     font-size: 1.15em;
   }
@@ -380,24 +414,21 @@ body {
     top: 1.2rem;
   }
 
-  /* Tarjetas en cuadrícula más espaciosa */
   .contenedorTarjetas{
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-areas:"gastado gastado gastado";
-}
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-areas:"gastado gastado gastado";
+  }
 
   .tarjeta {
     padding: 1.5em;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
 
-  /* Contenedor más ancho y equilibrado */
   .contenedor {
     margin: auto;
   }
 
-  /* Formularios centrados */
   form {
     display: flex;
     flex-direction: column;
@@ -409,12 +440,12 @@ body {
     font-size: 1em;
   }
 }
+
 /******************************/
-/*    11.Media Print  */
+/*        11.Media Print      */
 /******************************/
 @media print {
 
-  /********** Ocultar elementos no necesarios **********/
   header,
   nav,
   footer,
@@ -426,7 +457,6 @@ body {
     display: none !important;
   }
 
-  /********** General **********/
   body {
     background: white !important;
     color: black !important;
@@ -466,7 +496,6 @@ body {
     font-size: 0.9em;
   }
 
-  /********** Tablas **********/
   table {
     width: 100%;
     border-collapse: collapse;
@@ -487,7 +516,6 @@ body {
     background-color: white !important;
   }
 
-  /********** Formularios **********/
   form {
     display: block;
   }
@@ -498,7 +526,6 @@ body {
     background: white !important;
   }
 
-  /********** Tarjetas **********/
   .contenedorTarjetas {
     display: block;
   }
@@ -514,7 +541,6 @@ body {
     color: black !important;
   }
 
-  /********** Imágenes **********/
   img {
     max-width: 100%;
     height: auto;
@@ -524,12 +550,10 @@ body {
     display: none !important;
   }
 
-  /********** Pie de página personalizado **********/
   @page {
     margin: 1.5cm;
   }
 
-  /********** Evitar cortes bruscos **********/
   table, tr, img, section, .tarjeta {
     page-break-inside: avoid;
   }
@@ -538,7 +562,6 @@ body {
     page-break-after: avoid;
   }
 
-  /********** Quitar colores fuertes **********/
   * {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Aketza Gonzalez, Lierni Sarraoa, Andoni Montero">
+    <meta name="description" content="Pagina para crear jugadores y aÃ±adirlos a la API">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="icon" href="../img/logo.png" type="image/x-icon">
+    <title>BB | DWEC</title>
+</head>
+
+<body>
+
+    <header>
+        <h1 id="tituloJugadores"></h1>
+        <nav class="menu">
+            <div class="menu--etiqueta">
+                <a href="./index.html"><img src="../img/logo.png" alt="Despliega Menu" class="menu--logo"></a>
+            </div>
+            <div class="menu--items">
+                <div class="menu--item"><a href="./index.html" id="paginaPrincipal"></a></div>
+                <div class="menu--item"><a href="./crearEquipo.html" id="crearEquipo"></a></div>
+                <div class="menu--item"><a href="./verEquipos.html" id="verEquipos"></a></div>
+            </div>
+        </nav>
+        <!-- SELECT A LA DERECHA -->
+        <div class="selector-derecha">
+            <select id="multiidioma">
+                <option value="es">es</option>
+                <option value="eu">eu</option>
+                <option value="en">en</option>
+            </select>
+        </div>
+    </header>
+
+    <main>
+        <section class="contenedor">
+            <select name="acciones" id="acciones">
+                <option value="crear">Crear jugador</option>
+                <option value="modificar">Modificar jugador</option>
+                <option value="eliminar">Eliminar jugador</option>
+            </select>
+
+            <select id="eligeJugador"></select>
+            <button id="btnConfirmar">Eliminar</button>
+
+            <div id="tablasJugadores" style="display: none">
+                <h2 id="creaJugador"></h2>
+                <label for="posicion" id="alineacion"></label>
+                <input type="text" name="posicion">
+                <br>
+                <label for="tags" id="tags"></label>
+                <input type="text" name="tags">
+                <br>
+                <label for="cantidad" id="cantidad"></label>
+                <input type="number" name="cantidad" min="1" max="16">
+                <br>
+                <label for="coste" id="precio"></label>
+                <input type="number" name="coste" min="1" max="250">
+                <br>
+                <label for="mv" id="mv"></label>
+                <input type="number" id="mv" min="1" max="10">
+                <br>
+                <label for="fu" id="fu"></label>
+                <input type="number" name="fu" min="1" max="10">
+                <br>
+                <label for="ag" id="ag"></label>
+                <input type="number" name="ag" min="2" max="6">
+                <br>
+                <label for="pa" id="ps"></label>
+                <input type="number" name="pa" min="2" max="6">
+                <br>
+                <label for="ar" id="ar"></label>
+                <input type="number" name="ar" min="2" max="11">
+                <br>
+                <label for="hab" id="habilidades"></label>
+                <input type="text" name="hab">
+                <br>
+                <label for="pri" id="pri"></label>
+                <input type="text" name="pri">
+                <br>
+                <label for="sec" id="sec"></label>
+                <input type="text" name="sec">
+                <br>
+                <label for="equipos" id="equipos"></label>
+                <input type="text" name="equipos">
+                <br>
+                <button id="btnGuardar">Guardar</button>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p>Poyecto DWEC - 2025</p>
+    </footer>
+    <script type="module" src="../js/jugadores.js"></script>
+    <script type="module" src="../js/selectMultiidioma.js"></script>
+</body>
+
+</html>

@@ -3,7 +3,7 @@ import { getEquipos,getJugadoresEquipo,getEquipo } from "./peticiones.js";
 import { loadLanguage } from "./multiidioma.js";
 
 //acceder al select
-let select=document.getElementById("equipos");
+let select=document.getElementById("selectEquipos");
 
 //funcion para añadir las cabeceras de la tabla
 function aniadeCabeceras(tr){
@@ -169,7 +169,6 @@ function crearEqipo(event){
 
 //funcion para cargar el select
 async function cargarSelect() {
-  select = document.getElementById("equipos");
   let equipos = await getEquipos();
   equipos.forEach(equipo => {
     let option = document.createElement("option")

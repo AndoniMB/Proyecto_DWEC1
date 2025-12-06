@@ -27,7 +27,7 @@ function applyStrings() {
     ids.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
-            el.innerText = strings[id];
+            el.innerHTML = strings[id];
         }
     });
 }

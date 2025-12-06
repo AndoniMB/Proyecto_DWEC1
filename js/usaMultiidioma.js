@@ -1,2 +1,2 @@
 import { loadLanguage } from "./multiidioma.js";
-loadLanguage("en")
+loadLanguage(sessionStorage.getItem("idioma"))
