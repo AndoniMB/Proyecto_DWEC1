@@ -98,12 +98,12 @@ async function aniadirJugador() {
   });
 
   let equiposDisp = await getEquipos();
-  let equiposInput = inputs[12].value.split(",").trim();
+  let equiposInput = inputs[12].value.split(",");
   let equipos = [];
 
   equiposInput.forEach(eq => {
     for (let i = 0; i < equiposDisp.length; i++) {
-      if (eq.toLowerCase() == equiposDisp[i].nombre.toLowerCase()) {
+      if (eq.toLowerCase().trim() == equiposDisp[i].nombre.toLowerCase().trim()) {
         equipos.push(equiposDisp[i].id);
         break;
       }
@@ -114,7 +114,7 @@ async function aniadirJugador() {
   {
     "id": (maxID + 1) + "",
     "posicion": inputs[0].value,
-    "tags": inputs[1].value.split(",").trim(),
+    "tags": inputs[1].value.split(","),
     "cantidad": inputs[2].value,
     "coste": inputs[3].value,
     "MV": inputs[4].value,
@@ -122,9 +122,9 @@ async function aniadirJugador() {
     "AG": inputs[6].value,
     "PA": inputs[7].value,
     "AR": inputs[8].value,
-    "Habilidades": inputs[9].value.split(",").trim(),
-    "Pri": inputs[10].value.split(",").trim(),
-    "Sec": inputs[11].value.split(",").trim(),
+    "Habilidades": inputs[9].value.split(","),
+    "Pri": inputs[10].value.split(","),
+    "Sec": inputs[11].value.split(","),
     "Equipos": equipos
   };
 
@@ -135,12 +135,12 @@ async function aniadirJugador() {
 async function modificarJugador() {
 
   let equiposDisp = await getEquipos();
-  let equiposInput = inputs[12].value.split(",").trim();
+  let equiposInput = inputs[12].value.split(",");
   let equipos = [];
 
   equiposInput.forEach(eq => {
     for (let i = 0; i < equiposDisp.length; i++) {
-      if (eq.toLowerCase() == equiposDisp[i].nombre.toLowerCase()) {
+      if (eq.toLowerCase().trim() == equiposDisp[i].nombre.toLowerCase().trim()) {
         equipos.push(equiposDisp[i].id);
         break;
       }
@@ -151,7 +151,7 @@ async function modificarJugador() {
   {
     "id": selectJugadores.value,
     "posicion": inputs[0].value,
-    "tags": inputs[1].value.split(",").trim(),
+    "tags": inputs[1].value.split(","),
     "cantidad": inputs[2].value,
     "coste": inputs[3].value,
     "MV": inputs[4].value,
@@ -159,9 +159,9 @@ async function modificarJugador() {
     "AG": inputs[6].value,
     "PA": inputs[7].value,
     "AR": inputs[8].value,
-    "Habilidades": inputs[9].value.split(",").trim(),
-    "Pri": inputs[10].value.split(",").trim(),
-    "Sec": inputs[11].value.split(",").trim(),
+    "Habilidades": inputs[9].value.split(","),
+    "Pri": inputs[10].value.split(","),
+    "Sec": inputs[11].value.split(","),
     "Equipos": equipos
   };
 
