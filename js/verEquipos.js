@@ -1,112 +1,113 @@
 //imports
-import { getEquipos,getJugadoresEquipo,getEquipo } from "./peticiones.js";
+import { getEquipos, getJugadoresEquipo, getEquipo, patchEquipo } from "./peticiones.js";
 import { loadLanguage } from "./multiidioma.js";
 
 //acceder al select
-let select=document.getElementById("selectEquipos");
+let select = document.getElementById("selectEquipos");
+let selectReroll = document.getElementById("equiposReroll");
 
 //funcion para añadir las cabeceras de la tabla
-function aniadeCabeceras(tr){
-    let tdCantidad=document.createElement("th");
-    tdCantidad.id="cantidad";
+function aniadeCabeceras(tr) {
+    let tdCantidad = document.createElement("th");
+    tdCantidad.id = "cantidad";
     tr.appendChild(tdCantidad);
-    let tdAlineacion=document.createElement("th");
-    tdAlineacion.id="alineacion";
+    let tdAlineacion = document.createElement("th");
+    tdAlineacion.id = "alineacion";
     tr.appendChild(tdAlineacion);
-    let tdTags=document.createElement("th");
-    tdTags.id="tags";
+    let tdTags = document.createElement("th");
+    tdTags.id = "tags";
     tr.appendChild(tdTags);
-    let tdPrecio=document.createElement("th");
-    tdPrecio.id="precio";
+    let tdPrecio = document.createElement("th");
+    tdPrecio.id = "precio";
     tr.appendChild(tdPrecio);
-    let tdMovimiento=document.createElement("th");
-    tdMovimiento.id="mv";
+    let tdMovimiento = document.createElement("th");
+    tdMovimiento.id = "mv";
     tr.appendChild(tdMovimiento);
-    let tdFuerza=document.createElement("th");
-    tdFuerza.id="fu";
+    let tdFuerza = document.createElement("th");
+    tdFuerza.id = "fu";
     tr.appendChild(tdFuerza);
-    let tdAgilidad=document.createElement("th");
-    tdAgilidad.id="ag";
+    let tdAgilidad = document.createElement("th");
+    tdAgilidad.id = "ag";
     tr.appendChild(tdAgilidad);
-    let tdPase=document.createElement("th");
-    tdPase.id="ps";
+    let tdPase = document.createElement("th");
+    tdPase.id = "ps";
     tr.appendChild(tdPase);
-    let tdArmadura=document.createElement("th");
-    tdArmadura.id="ar";
+    let tdArmadura = document.createElement("th");
+    tdArmadura.id = "ar";
     tr.appendChild(tdArmadura);
-    let tdHabilidades=document.createElement("th");
-    tdHabilidades.id="habilidades";
+    let tdHabilidades = document.createElement("th");
+    tdHabilidades.id = "habilidades";
     tr.appendChild(tdHabilidades);
-    let tdPrincipal=document.createElement("th");
-    tdPrincipal.id="pri";
+    let tdPrincipal = document.createElement("th");
+    tdPrincipal.id = "pri";
     tr.appendChild(tdPrincipal);
-    let tdSecundaria=document.createElement("th");
-    tdSecundaria.id="sec";
+    let tdSecundaria = document.createElement("th");
+    tdSecundaria.id = "sec";
     tr.appendChild(tdSecundaria);
 }
 
 //crear la funcion para crear la tabla
-async function mostrarEquipoSeleccionado(event){
-    let section=document.getElementById("informacionEquipo");
-    section.innerHTML="";
-    let tabla=document.createElement("table");
-    let tr=document.createElement("tr");
+async function mostrarEquipoSeleccionado(event) {
+    let section = document.getElementById("informacionEquipo");
+    section.innerHTML = "";
+    let tabla = document.createElement("table");
+    let tr = document.createElement("tr");
     aniadeCabeceras(tr);
     tabla.appendChild(tr);
-    let reroll=document.createElement("p");
-    let apotecario=document.createElement("p");
-    let normasEspeciales=document.createElement("p");
+    let reroll = document.createElement("p");
+    let apotecario = document.createElement("p");
+    let normasEspeciales = document.createElement("p");
 
-    let jugadores=await getJugadoresEquipo(select.value)
-    let equipo= await getEquipo(select.value);
+    let jugadores = await getJugadoresEquipo(select.value)
+    let equipo = await getEquipo(select.value);
     jugadores.forEach(jugador => {
-        aniadirATabla(tabla,jugador);
-        
+        aniadirATabla(tabla, jugador);
+
     });
     switch (sessionStorage.getItem("idioma")) {
         case "en":
-            reroll.textContent="Reroll: 0-8 "+equipo.reroll+"k";
-            if(equipo.apotecario){
+            reroll.textContent = "Reroll: 0-8 " + equipo.reroll + "k";
+            if (equipo.apotecario) {
 
-            }else{
+            } else {
 
             }
-            apotecario.textContent="Apothecary: "+equipo.apotecario;
-            if(equipo.normasEspeciales.length==0){
-                normasEspeciales.textContent="The team doesn't have speacial rules";
-            }else{
-                normasEspeciales.textContent="Special rules: "+equipo.normasEspeciales.join(", ");
+            apotecario.textContent = "Apothecary: " + equipo.apotecario;
+            if (equipo.normasEspeciales.length == 0) {
+                normasEspeciales.textContent = "The team doesn't have speacial rules";
+            } else {
+                normasEspeciales.textContent = "Special rules: " + equipo.normasEspeciales.join(", ");
             }
-          break;
+            break;
         case "eu":
-            reroll.textContent="Reroll: 0-8 "+equipo.reroll+"k";
-            if(equipo.apotecario){
-                apotecario.textContent="Medikua: bai";
-            }else{
-                apotecario.textContent="Medikua: ez";
+            reroll.textContent = "Reroll: 0-8 " + equipo.reroll + "k";
+            if (equipo.apotecario) {
+                apotecario.textContent = "Medikua: bai";
+            } else {
+                apotecario.textContent = "Medikua: ez";
             }
-            if(equipo.normasEspeciales.length==0){
-                normasEspeciales.textContent="Ez ditu arau berezirik";
-            }else{
-                normasEspeciales.textContent="Arau bereziak: "+equipo.normasEspeciales.join(", ");
+            if (equipo.normasEspeciales.length == 0) {
+                normasEspeciales.textContent = "Ez ditu arau berezirik";
+            } else {
+                normasEspeciales.textContent = "Arau bereziak: " + equipo.normasEspeciales.join(", ");
             }
-          break;
+            break;
         case "es":
-            reroll.textContent="Reroll: 0-8 "+equipo.reroll+"k";
-            if(equipo.apotecario){
-                apotecario.textContent="Apotecario: si";
-            }else{
-                apotecario.textContent="Apotecario: no";
+            reroll.textContent = "Reroll: 0-8 " + equipo.reroll + "k";
+            if (equipo.apotecario) {
+                apotecario.textContent = "Apotecario: si";
+            } else {
+                apotecario.textContent = "Apotecario: no";
             }
-            if(equipo.normasEspeciales.length==0){
-                normasEspeciales.textContent="No tiene normas especiales";
-            }else{
-                normasEspeciales.textContent="Normas Especiales: "+equipo.normasEspeciales.join(", ");
+            if (equipo.normasEspeciales.length == 0) {
+                normasEspeciales.textContent = "No tiene normas especiales";
+            } else {
+                normasEspeciales.textContent = "Normas Especiales: " + equipo.normasEspeciales.join(", ");
             }
-          break;
-      }
+            break;
+    }
 
-    tabla.className="equipo";
+    tabla.className = "equipo";
     tabla.classList.add("ocupaTodo")
     section.appendChild(tabla);
     section.appendChild(reroll);
@@ -115,38 +116,44 @@ async function mostrarEquipoSeleccionado(event){
     loadLanguage(sessionStorage.getItem("idioma"))
 }
 
+// función para mostrar el valor del reroll del equipo seleccionado
+async function mostrarRerollSeleccionado(event) {
+    let equipo = await getEquipo(selectReroll.value);
+    document.getElementById("nuevoReroll").value = equipo.reroll;
+}
+
 //funcion para aniadir un jugador a la tabla
-function aniadirATabla(tabla,jugador){
-    let tr=document.createElement("tr");
-    let tdCantidad=document.createElement("td");
-    let tdAlineacion=document.createElement("td");
-    let tdTags=document.createElement("td");
-    let tdPrecio=document.createElement("td");
-    let tdMovimiento=document.createElement("td");
-    let tdFuerza=document.createElement("td");
-    let tdAgilidad=document.createElement("td");
-    let tdPase=document.createElement("td");
-    let tdArmadura=document.createElement("td");
-    let tdHabilidades=document.createElement("td");
-    let tdPrincipal=document.createElement("td");
-    let tdSecundaria=document.createElement("td");
-    tdCantidad.textContent="0-"+jugador.cantidad;
-    tdAlineacion.textContent=jugador.posicion;
-    tdTags.innerHTML="·"+jugador.tags.join("<br>·");
-    tdPrecio.textContent=jugador.coste+"k";
-    tdMovimiento.textContent=jugador.MV;
-    tdFuerza.textContent=jugador.FU;
-    tdAgilidad.textContent=jugador.AG+"+";
-    tdPase.textContent=jugador.PA+"+";
-    tdArmadura.textContent=jugador.AR+"+";
+function aniadirATabla(tabla, jugador) {
+    let tr = document.createElement("tr");
+    let tdCantidad = document.createElement("td");
+    let tdAlineacion = document.createElement("td");
+    let tdTags = document.createElement("td");
+    let tdPrecio = document.createElement("td");
+    let tdMovimiento = document.createElement("td");
+    let tdFuerza = document.createElement("td");
+    let tdAgilidad = document.createElement("td");
+    let tdPase = document.createElement("td");
+    let tdArmadura = document.createElement("td");
+    let tdHabilidades = document.createElement("td");
+    let tdPrincipal = document.createElement("td");
+    let tdSecundaria = document.createElement("td");
+    tdCantidad.textContent = "0-" + jugador.cantidad;
+    tdAlineacion.textContent = jugador.posicion;
+    tdTags.innerHTML = "·" + jugador.tags.join("<br>·");
+    tdPrecio.textContent = jugador.coste + "k";
+    tdMovimiento.textContent = jugador.MV;
+    tdFuerza.textContent = jugador.FU;
+    tdAgilidad.textContent = jugador.AG + "+";
+    tdPase.textContent = jugador.PA + "+";
+    tdArmadura.textContent = jugador.AR + "+";
     if (jugador.Habilidades[0] == "-") {
-      tdHabilidades.innerHTML = "-";
+        tdHabilidades.innerHTML = "-";
     } else {
-      tdHabilidades.innerHTML = "·" + jugador.Habilidades.join("<br>·");
+        tdHabilidades.innerHTML = "·" + jugador.Habilidades.join("<br>·");
     }
     // tdHabilidades.innerHTML=jugador.Habilidades.join("<br>");
-    tdPrincipal.textContent=jugador.Pri;
-    tdSecundaria.textContent=jugador.Sec;
+    tdPrincipal.textContent = jugador.Pri;
+    tdSecundaria.textContent = jugador.Sec;
     tr.appendChild(tdCantidad);
     tr.appendChild(tdAlineacion);
     tr.appendChild(tdTags);
@@ -163,26 +170,56 @@ function aniadirATabla(tabla,jugador){
 }
 
 //funcion para ir a crear el equipo
-function crearEqipo(event){
-    location="../html/crearEquipo.html";
+function crearEqipo(event) {
+    location = "../html/crearEquipo.html";
+}
+
+//funcion para ir a crear el equipo
+async function actualizarReroll(event) {
+    let reroll = document.getElementById("nuevoReroll").value;
+    console.log(reroll);
+    let equipo =
+    {
+        "id": selectReroll.value,
+        "reroll": reroll
+    };
+
+    await patchEquipo(selectReroll.value, equipo);
 }
 
 //funcion para cargar el select
 async function cargarSelect() {
-  let equipos = await getEquipos();
-  equipos.forEach(equipo => {
-    let option = document.createElement("option")
-    option.text = equipo.nombre;
-    option.value = equipo.id;
-    select.appendChild(option);
-  });
-  select.addEventListener("change", mostrarEquipoSeleccionado);
+    let equipos = await getEquipos();
+    equipos.forEach(equipo => {
+        let option = document.createElement("option")
+        option.text = equipo.nombre;
+        option.value = equipo.id;
+        select.appendChild(option);
+    });
+    select.addEventListener("change", mostrarEquipoSeleccionado);
+}
+
+//funcion para cargar el select del reroll
+async function cargarSelectReroll() {
+    let equipos = await getEquipos();
+    equipos.forEach(equipo => {
+        let option = document.createElement("option")
+        option.text = equipo.nombre;
+        option.value = equipo.id;
+        selectReroll.appendChild(option);
+    });
+    selectReroll.addEventListener("change", mostrarRerollSeleccionado);
 }
 
 //funcion para cargar la pagina
 async function cargarPagina() {
-  await cargarSelect();
-  await mostrarEquipoSeleccionado();
+    await cargarSelect();
+    await cargarSelectReroll();
+    await mostrarEquipoSeleccionado();
+    await mostrarRerollSeleccionado();
 }
-document.getElementById("btnCrearEquipo").addEventListener("click",crearEqipo)
+
+
+document.getElementById("btnCrearEquipo").addEventListener("click", crearEqipo)
+document.getElementById("btnReroll").addEventListener("click", actualizarReroll)
 cargarPagina();
