@@ -11,4 +11,4 @@ async function cargar() {
 
 }
 
-await cargar()
+cargar()
